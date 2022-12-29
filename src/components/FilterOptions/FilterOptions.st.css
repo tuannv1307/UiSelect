@@ -1,0 +1,44 @@
+.root {
+    border-bottom: 1px solid #e3e3e3;
+    margin: 0 1rem;
+    padding: 1rem 0;
+    position: relative;
+}
+
+.actionSearch {
+    position: relative;
+}
+
+.actionSearch > svg {
+    position: absolute;
+    right: 18px;
+    top: 6px;
+}
+
+.inputFilter {
+    width: calc(100% - 70px);
+    -webkit-appearance: none;
+    background-color: #fff;
+    border: 1px solid #adadad;
+    border-radius: 1px;
+    box-shadow: none;
+    color: #303030;
+    font-size: 1rem;
+    font-weight: 400;
+    height: auto;
+    line-height: 1.36;
+    padding: 0.4rem 1rem 0.4rem;
+    transition: border-color .1s linear;
+    padding-right: 3rem;
+    vertical-align: baseline;
+}
+
+.inputFilter:focus {
+    border-color: #007bdb;
+    outline: none;
+}
+
+.itemsQuality {
+    color: #a79d95;
+    margin-top: 1rem;
+}
