@@ -1,5 +1,6 @@
 .root {
     position: relative;
+    background-color: #fff;
 }
 
 .showData {
@@ -81,4 +82,11 @@
     padding: 3px 29px 3px 10px;
     position: relative;
     transition: border-color .1s linear;
+}
+
+
+.closeItem {
+    position: absolute;
+    right: 7px;
+    top: 6px;
 }

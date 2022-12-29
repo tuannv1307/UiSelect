@@ -11,15 +11,11 @@ import { dataUiSelect } from "../src/constants";
 const data: any = dataUiSelect;
 
 const Demo = () => (
-  <Provider store={initStore()}>
-    <SelectOptions typeRender="single" typeSearch="offline" options={data} />
-  </Provider>
+  <App typeRender="single" typeSearch="offline" options={data} />
 );
 
 const Demo1 = () => (
-  <Provider store={initStore()}>
-    <SelectOptions typeRender="tree" typeSearch="offline" options={data} />
-  </Provider>
+  <App typeRender="tree" typeSearch="offline" options={data} />
 );
 export default {
   category: CATEGORY.COMPONENTS,
@@ -38,9 +34,9 @@ export default {
       component: <Demo />,
     }),
 
-    // demo({
-    //   title: "Demo 2: tree",
-    //   component: <Demo1 />,
-    // }),
+    demo({
+      title: "Demo 2: tree",
+      component: <Demo1 />,
+    }),
   ],
 };

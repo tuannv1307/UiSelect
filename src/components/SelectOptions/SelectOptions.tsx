@@ -11,7 +11,7 @@ import { st, classes } from "./SelectOptions.st.css";
 export type SelectOptionsProps = {
   typeRender?: "single" | "tree";
   typeSearch?: "online" | "offline";
-  options: [];
+  options?: {}[];
 };
 const SelectOptions = ({
   typeRender,
@@ -50,26 +50,41 @@ const SelectOptions = ({
         onClick={handleShowOptions}
       >
         <div className={st(classes.listItemData)}>
-          {typeRender === "single" && (
-            <div
-              className={st(classes.itemData, {
-                isSingle: typeRender === "single",
-              })}
-            >
-              {_.size(optionsSelect) > 0 &&
-                _.map(optionsSelect, (opt) => <>{opt.label}</>)}
-            </div>
+          {typeSearch === "offline" && (
+            <>
+              {typeRender === "single" && (
+                <div
+                  className={st(classes.itemData, {
+                    isSingle: typeRender === "single",
+                  })}
+                >
+                  {_.size(optionsSelect) > 0 &&
+                    _.map(optionsSelect, (opt) => <>{opt.label}</>)}
+                </div>
+              )}
+
+              {typeRender === "tree" && (
+                <div
+                  className={st(classes.itemData, {
+                    isTree: typeRender === "tree",
+                  })}
+                >
+                  {_.size(optionsSelect) > 0 &&
+                    _.map(optionsSelect, (opt) => <>{opt.label}</>)}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className={st(classes.closeItem, "bi bi-x-lg")}
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                  </svg>
+                </div>
+              )}
+            </>
           )}
-          {/* 
-          {typeRender === "tree" && (
-            <div
-              className={st(classes.itemData, {
-                isTree: typeRender === "tree",
-              })}
-            >
-              2
-            </div>
-          )} */}
         </div>
         <button className={st(classes.toggleSelect, { isShowOptions })}>
           <svg

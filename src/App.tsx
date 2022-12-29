@@ -3,7 +3,11 @@ import { Provider } from "react-redux";
 import { initStore } from "./stores/store";
 import SelectOptions from "./components/SelectOptions/SelectOptions";
 
-function App(props: {}) {
+function App(props: {
+  typeRender?: "single" | "tree";
+  typeSearch?: "online" | "offline";
+  options?: {}[];
+}) {
   const store = initStore();
 
   return (
