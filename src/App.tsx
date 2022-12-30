@@ -6,6 +6,7 @@ import SelectOptions from "./components/SelectOptions/SelectOptions";
 function App(props: {
   typeRender?: "single" | "tree";
   typeSearch?: "online" | "offline";
+  typeSelect?: "single" | "multi";
   options?: {}[];
 }) {
   const store = initStore();

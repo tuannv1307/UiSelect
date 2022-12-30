@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { ActionTypes } from "./ActionTypes";
+import _ from "lodash";
 
 export type UiSelect = {
   data?: {}[];
@@ -13,16 +14,25 @@ const AppStore = createSlice<UiSelect, ActionTypes>({
   name: "ui_select",
   initialState: initState as UiSelect,
   reducers: {
-    changeTitle: (state, action) => {
-      // state.data = action.payload;
-    },
     initDataUI: (state, action) => {
       const { data } = action.payload;
       state.data = [...data];
     },
+
+    addSelectoptions: (state, action) => {
+      const arrSelect = action.payload;
+
+      state.data = arrSelect;
+    },
+    deleteOptionSelected: (state, action) => {
+      const arrDelete = action.payload;
+
+      state.data = arrDelete;
+    },
   },
 });
 
-export const { changeTitle, initDataUI } = AppStore.actions;
+export const { initDataUI, addSelectoptions, deleteOptionSelected } =
+  AppStore.actions;
 
 export default AppStore.reducer;

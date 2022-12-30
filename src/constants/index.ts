@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export const dataUiSelect = [
   {
     value: "Default",
@@ -131,15 +133,55 @@ export const dataUiSelect = [
   },
 ];
 
-export const groupOptions2 = [];
+export const platArrData = (arrData?: []) => {
+  let newArr: any = [];
+  const handleArr = (arrData?: any) => {
+    _.forEach(arrData, (item) => {
+      if (item.groupOptions) {
+        newArr.push({
+          value: item.value,
+          label: item.label,
+        });
+        handleArr(item.groupOptions);
+      } else newArr.push({ ...item, value: item.value, label: item.label });
+    });
+  };
+  handleArr(arrData);
+  return newArr;
+};
 
-export const groupOptions = [
-  {
-    label: "groupOptions1",
-    options: dataUiSelect,
-  },
-  {
-    label: "groupOptions2",
-    options: groupOptions2,
-  },
-];
+export const calculatorArr = (arrData?: [], level = 1, path = "") => {
+  let newArrData: any = [];
+
+  const handle = (arr: any) => {
+    _.forEach(arr, (opt: any) => {
+      if (opt.groupOptions) {
+        level = level + 1;
+        newArrData.push({ ...opt, level: level, path: path + "d" });
+        handle(opt.groupOptions);
+      } else {
+        newArrData.push({ ...opt, level: level, path: path });
+      }
+    });
+  };
+  handle(arrData);
+  return newArrData;
+};
+
+export function recursiveCalculator(
+  data?: any,
+  // path: string = "",
+  currentLevel = 1
+) {
+  _.each(data, (item) => {
+    // if (item.level) {
+    //item["level"] = currentLevel;
+    //}
+    console.log(item);
+
+    // if (item.groupOptions) {
+    //   recursiveCalculator(item?.groupOptions, currentLevel + 1);
+    // } else return item;
+  });
+  return data;
+}

@@ -2,21 +2,35 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
-import { UiSelect, initDataUI } from "../../stores/ReduxStore";
-import { dataUiSelect } from "../../constants";
+import {
+  UiSelect,
+  addSelectoptions,
+  deleteOptionSelected,
+  initDataUI,
+} from "../../stores/ReduxStore";
+import {
+  calculatorArr,
+  dataUiSelect,
+  platArrData,
+  recursiveCalculator,
+} from "../../constants";
 import Options from "../Options/Options";
-import { st, classes } from "./SelectOptions.st.css";
+import FilterOptions from "../FilterOptions/FilterOptions";
 //import OutSideClick from "react-outside-click-handler";
+
+import { st, classes } from "./SelectOptions.st.css";
 
 export type SelectOptionsProps = {
   typeRender?: "single" | "tree";
   typeSearch?: "online" | "offline";
+  typeSelect?: "single" | "multi";
   options?: {}[];
 };
 const SelectOptions = ({
   typeRender,
   typeSearch,
   options,
+  typeSelect,
 }: SelectOptionsProps) => {
   let data: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
@@ -25,10 +39,6 @@ const SelectOptions = ({
   const dispatch = useDispatch();
 
   let optionsSelect: any = options;
-
-  useEffect(() => {
-    dispatch(initDataUI({ data: dataUiSelect }));
-  }, [dispatch]);
 
   const [isShowOptions, setisShowOptions] = useState(false);
 
@@ -39,12 +49,72 @@ const SelectOptions = ({
   const handleOutsideCick = () => {
     setisShowOptions(false);
   };
-
+  const handleCloseOptions = () => {
+    setisShowOptions(false);
+  };
   optionsSelect = data.data;
+  console.log("🚀 ~ file: SelectOptions.tsx:56 ~ optionsSelect", optionsSelect);
+  recursiveCalculator(data.data);
+  //console.log("🚀 ~ file: SelectOptions.tsx:52 ~ abc", abc);
 
+  useEffect(() => {
+    dispatch(initDataUI({ data: dataUiSelect }));
+  }, [dispatch]);
+
+  let platArrDataSe = platArrData(optionsSelect);
+
+  const handleSearch = (label: string) => {
+    if (label !== "") {
+      platArrDataSe = _.filter(
+        platArrData(optionsSelect),
+        (opt) =>
+          _.indexOf(_.toLower(_.toString(opt.label)), _.toLower(label)) > -1
+      );
+    } else {
+      platArrDataSe = platArrData(optionsSelect);
+    }
+
+    dispatch(addSelectoptions(platArrDataSe));
+
+    return platArrDataSe;
+  };
+
+  const haveItemSelected = _.some(platArrDataSe, ["isSelected", true]);
+
+  const deleteOptionAllSelected = (type?: string, make?: string) => {
+    let arr: any = [];
+    if (type === "CLEAR_ALL" && make === "All") {
+      arr = _.cloneDeep(platArrDataSe);
+      arr = _.map(arr, (opt) => ({ ...opt, isSelected: false }));
+      dispatch(deleteOptionSelected(arr));
+    }
+    if (type === "DELETE_ITEM") {
+      arr = _.cloneDeep(platArrDataSe);
+      arr = _.map(arr, (opt) =>
+        opt.value === make ? { ...opt, isSelected: false } : opt
+      );
+    }
+
+    dispatch(deleteOptionSelected(arr));
+  };
   return (
     <div className={st(classes.root)}>
       {/* <OutSideClick onOutsideClick={handleOutsideCick}> */}
+      {typeSelect === "multi" && haveItemSelected && (
+        <div className={st(classes.delete)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            fill="currentColor"
+            className={st(classes.iconDelete, "bi bi-x-lg")}
+            viewBox="0 0 16 16"
+            onClick={() => deleteOptionAllSelected("CLEAR_ALL", "All")}
+          >
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+          </svg>
+        </div>
+      )}
       <div
         className={st(classes.showData, { isShowOptions })}
         onClick={handleShowOptions}
@@ -52,36 +122,53 @@ const SelectOptions = ({
         <div className={st(classes.listItemData)}>
           {typeSearch === "offline" && (
             <>
-              {typeRender === "single" && (
-                <div
-                  className={st(classes.itemData, {
-                    isSingle: typeRender === "single",
-                  })}
-                >
-                  {_.size(optionsSelect) > 0 &&
-                    _.map(optionsSelect, (opt) => <>{opt.label}</>)}
-                </div>
+              {typeSelect === "single" && (
+                <>
+                  {_.map(optionsSelect, (opt) => (
+                    <div key={opt?.value}>
+                      {opt?.isSelected && (
+                        <div
+                          className={st(classes.itemData, {
+                            isSingle: typeSelect === "single",
+                          })}
+                        >
+                          {opt?.label}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </>
               )}
 
-              {typeRender === "tree" && (
-                <div
-                  className={st(classes.itemData, {
-                    isTree: typeRender === "tree",
-                  })}
-                >
-                  {_.size(optionsSelect) > 0 &&
-                    _.map(optionsSelect, (opt) => <>{opt.label}</>)}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className={st(classes.closeItem, "bi bi-x-lg")}
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-                  </svg>
-                </div>
+              {typeSelect === "multi" && (
+                <>
+                  {_.map(optionsSelect, (opt) => (
+                    <span key={opt?.value}>
+                      {opt?.isSelected && (
+                        <div
+                          className={st(classes.itemData, {
+                            isMulti: typeSelect === "multi",
+                          })}
+                        >
+                          {opt?.label}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            className={st(classes.closeItem, "bi bi-x-lg")}
+                            viewBox="0 0 16 16"
+                            onClick={() =>
+                              deleteOptionAllSelected("DELETE_ITEM", opt.value)
+                            }
+                          >
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                          </svg>
+                        </div>
+                      )}
+                    </span>
+                  ))}
+                </>
               )}
             </>
           )}
@@ -99,9 +186,30 @@ const SelectOptions = ({
           </svg>
         </button>
       </div>
-      {/* </OutSideClick> */}
       {isShowOptions && (
-        <Options typeRender={typeRender} optionsSelect={optionsSelect} />
+        <div className={st(classes.options)}>
+          <FilterOptions
+            typeRender={typeRender}
+            // optionsSelect={optionsSelect}
+            platArrData={platArrDataSe}
+            handleSearch={handleSearch}
+          />
+
+          <>
+            {/* {_.size(optionsSelect) > 0 &&
+              _.map(platArrData(optionsSelect), (opt) => ( */}
+            <Options
+              typeRender={typeRender}
+              //   options={opt}
+              platArrData={platArrDataSe}
+              // key={opt.value}
+              handleCloseOptions={handleCloseOptions}
+              typeSelect={typeSelect}
+              deleteOptionAllSelected={deleteOptionAllSelected}
+            />
+            {/* ))} */}
+          </>
+        </div>
       )}
     </div>
   );

@@ -1,8 +1,32 @@
 .root {
-    border-bottom: 1px solid #e3e3e3;
+
+    /* 
     margin: 0 1rem;
     padding: 1rem 0;
     position: relative;
+    background-color: #fff;
+    border: 1px solid #007bdb;
+    border-radius: 1px;
+     box-shadow: 1px 1px 5px rgb(0 0 0 / 50%); 
+    color: #41362f;
+
+    font-weight: 400;
+    left: 0;
+    list-style: none;
+    margin: 2px 0 0;
+    min-width: 0;
+    padding: 0;
+     position: absolute; 
+    right: 0;
+    top: 100%;
+    border-bottom: 0;
+     */
+}
+
+.contentFilter {
+    position: relative;
+    margin: 13px;
+    border-bottom: 1px solid #e3e3e3;
 }
 
 .actionSearch {
@@ -40,5 +64,5 @@
 
 .itemsQuality {
     color: #a79d95;
-    margin-top: 1rem;
+    margin: 1rem 0;
 }

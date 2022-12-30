@@ -3,8 +3,6 @@ import type { UiSelect } from "./ReduxStore";
 
 export type ActionTypes = {
   initDataUI: (state: UiSelect, action: PayloadAction<{ data: any[] }>) => void;
-  changeTitle: (
-    state: UiSelect,
-    action: PayloadAction<{ title?: string }>
-  ) => void;
+  addSelectoptions: (state: UiSelect, action: PayloadAction<any>) => void;
+  deleteOptionSelected: (state: UiSelect, action: PayloadAction<any>) => void;
 };

@@ -1,19 +1,20 @@
 .root {
     background-color: #fff;
-    border: 1px solid #007bdb;
+    /* border: 1px solid #007bdb; */
     border-radius: 1px;
-    box-shadow: 1px 1px 5px rgb(0 0 0 / 50%);
+    /* box-shadow: 1px 1px 5px rgb(0 0 0 / 50%); */
     color: #41362f;
 
     font-weight: 400;
     left: 0;
     list-style: none;
-    margin: 2px 0 0;
+    /* margin: 2px 0 0; */
     min-width: 0;
     padding: 0;
-    position: absolute;
+    /* position: absolute; */
     right: 0;
     top: 100%;
+    border-top: 0;
 }
 
 
@@ -25,10 +26,16 @@
 
 
 .itemOption {
+    -st-states: active;
     cursor: pointer;
     display: block;
     padding: 0.6875em 1em;
     transition: all 0.3s;
+}
+
+
+.itemOption:active {
+    background-color: #e0f6fe;
 }
 
 .itemOption:hover {

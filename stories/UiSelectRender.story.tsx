@@ -11,11 +11,21 @@ import { dataUiSelect } from "../src/constants";
 const data: any = dataUiSelect;
 
 const Demo = () => (
-  <App typeRender="single" typeSearch="offline" options={data} />
+  <App
+    typeRender="single"
+    typeSelect="single"
+    typeSearch="offline"
+    options={data}
+  />
 );
 
 const Demo1 = () => (
-  <App typeRender="tree" typeSearch="offline" options={data} />
+  <App
+    typeRender="single"
+    typeSelect="multi"
+    typeSearch="offline"
+    options={data}
+  />
 );
 export default {
   category: CATEGORY.COMPONENTS,
@@ -29,13 +39,13 @@ export default {
     //   component: <App />,
     // }),
 
-    demo({
-      title: "Demo 1: single",
-      component: <Demo />,
-    }),
+    // demo({
+    //   title: "Demo 1: single",
+    //   component: <Demo />,
+    // }),
 
     demo({
-      title: "Demo 2: tree",
+      title: "Demo 2: multi",
       component: <Demo1 />,
     }),
   ],

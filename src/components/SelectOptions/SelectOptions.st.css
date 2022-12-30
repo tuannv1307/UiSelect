@@ -9,9 +9,22 @@
     cursor: pointer;
     display: block;
     min-height: 2.2rem;
-    padding-right: 3.6rem;
+
     white-space: normal;
     position: relative;
+}
+
+.iconDelete {
+
+    color: rgb(204, 204, 204);
+}
+
+.iconDelete:hover {
+    color: rgb(154, 154, 154);
+}
+
+.iconDelete:active {
+    color: rgb(154, 154, 154);
 }
 
 .toggleSelect {
@@ -27,6 +40,7 @@
     top: 0;
     padding: 14px;
     cursor: pointer;
+
 }
 
 .toggleSelect:isShowOptions > .svgToggleDown {
@@ -59,20 +73,20 @@
     cursor: pointer;
     display: block;
     /* min-height: 3.2rem; */
-    /* padding-right: 3.6rem; */
+    padding-right: 5rem;
     white-space: normal;
 }
 
 .itemData {
-    -st-states: isSingle, isTree;
+    -st-states: isSingle, isMulti;
 }
 
 .itemData:isSingle {
 
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 1rem;
 }
 
-.itemData:isTree {
+.itemData:isMulti {
     background-color: #f5f5f5;
     border: 1px solid #a79d95;
     border-radius: 1px;
@@ -89,4 +103,39 @@
     position: absolute;
     right: 7px;
     top: 6px;
+    opacity: .4;
+}
+
+.closeItem:hover {
+
+    opacity: 1;
+}
+
+.options {
+    background-color: #fff;
+    border: 1px solid #007bdb;
+    border-radius: 1px;
+    box-shadow: 1px 1px 5px rgb(0 0 0 / 50%);
+    color: #41362f;
+
+    font-weight: 400;
+    left: 0;
+    list-style: none;
+    margin: 2px 0 0;
+    min-width: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 100%;
+
+}
+
+.delete {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    right: 55px;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
 }
