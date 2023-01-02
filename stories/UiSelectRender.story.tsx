@@ -27,6 +27,15 @@ const Demo1 = () => (
     options={data}
   />
 );
+
+const Demo2 = () => (
+  <App
+    typeRender="tree"
+    typeSelect="multi"
+    typeSearch="offline"
+    options={data}
+  />
+);
 export default {
   category: CATEGORY.COMPONENTS,
   storyName: "UI select render with data",
@@ -41,12 +50,12 @@ export default {
 
     // demo({
     //   title: "Demo 1: single",
-    //   component: <Demo />,
+    //   component: <Demo1 />,
     // }),
 
     demo({
       title: "Demo 2: multi",
-      component: <Demo1 />,
+      component: <Demo2 />,
     }),
   ],
 };

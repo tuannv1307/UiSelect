@@ -150,38 +150,29 @@ export const platArrData = (arrData?: []) => {
   return newArr;
 };
 
-export const calculatorArr = (arrData?: [], level = 1, path = "") => {
-  let newArrData: any = [];
+export const arrdataRecursive = (arr: any, currentLevel = 1, path = "") => {
+  const newArrData: any = [];
+  _.forEach(arr, (item) => {
+    const currentPath: string = `${path} / ${item.label}`;
+    item = { ...item };
+    item["level"] = currentLevel;
+    item["path"] =
+      currentLevel === 0
+        ? ""
+        : currentPath.substring(
+            3,
+            currentPath.length - item?.label?.length - 3
+          );
 
-  const handle = (arr: any) => {
-    _.forEach(arr, (opt: any) => {
-      if (opt.groupOptions) {
-        level = level + 1;
-        newArrData.push({ ...opt, level: level, path: path + "d" });
-        handle(opt.groupOptions);
-      } else {
-        newArrData.push({ ...opt, level: level, path: path });
-      }
-    });
-  };
-  handle(arrData);
+    if (item.groupOptions) {
+      item.groupOptions = arrdataRecursive(
+        item.groupOptions,
+        currentLevel + 1,
+        currentPath
+      );
+    }
+
+    newArrData.push(item);
+  });
   return newArrData;
 };
-
-export function recursiveCalculator(
-  data?: any,
-  // path: string = "",
-  currentLevel = 1
-) {
-  _.each(data, (item) => {
-    // if (item.level) {
-    //item["level"] = currentLevel;
-    //}
-    console.log(item);
-
-    // if (item.groupOptions) {
-    //   recursiveCalculator(item?.groupOptions, currentLevel + 1);
-    // } else return item;
-  });
-  return data;
-}

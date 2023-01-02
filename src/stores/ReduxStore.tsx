@@ -2,6 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { ActionTypes } from "./ActionTypes";
 import _ from "lodash";
 
+export type DATA_UI = {
+  value: string;
+  label: string;
+  groupOptions: {}[];
+};
+
 export type UiSelect = {
   data?: {}[];
 };

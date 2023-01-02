@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, memo, useState } from "react";
 import _ from "lodash";
 
 import { st, classes } from "./FilterOptions.st.css";
@@ -7,21 +7,19 @@ export type FilterOptionsProps = {
   typeRender?: "single" | "tree";
   handleSearch?: any;
   platArrData?: any;
+  inputSearch: any;
+  hanldeOnchangeSearch: any;
 };
 
 const FilterOptions = ({
   typeRender,
   handleSearch,
   platArrData,
+  inputSearch,
+  hanldeOnchangeSearch,
 }: FilterOptionsProps) => {
   // console.log(platArrData);
-  const [inputSearch, setInputSearch] = useState("");
 
-  const hanldeOnchangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const label = e.target.value;
-    setInputSearch(label);
-    handleSearch(label);
-  };
   return (
     <div className={st(classes.root)}>
       <div className={st(classes.contentFilter)}>
@@ -54,4 +52,4 @@ const FilterOptions = ({
   );
 };
 
-export default FilterOptions;
+export default memo(FilterOptions);

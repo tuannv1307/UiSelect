@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
@@ -8,12 +8,7 @@ import {
   deleteOptionSelected,
   initDataUI,
 } from "../../stores/ReduxStore";
-import {
-  calculatorArr,
-  dataUiSelect,
-  platArrData,
-  recursiveCalculator,
-} from "../../constants";
+import { arrdataRecursive, dataUiSelect, platArrData } from "../../constants";
 import Options from "../Options/Options";
 import FilterOptions from "../FilterOptions/FilterOptions";
 //import OutSideClick from "react-outside-click-handler";
@@ -41,6 +36,7 @@ const SelectOptions = ({
   let optionsSelect: any = options;
 
   const [isShowOptions, setisShowOptions] = useState(false);
+  const [inputSearch, setInputSearch] = useState("");
 
   const handleShowOptions = () => {
     setisShowOptions(!isShowOptions);
@@ -53,31 +49,33 @@ const SelectOptions = ({
     setisShowOptions(false);
   };
   optionsSelect = data.data;
-  console.log("🚀 ~ file: SelectOptions.tsx:56 ~ optionsSelect", optionsSelect);
-  recursiveCalculator(data.data);
-  //console.log("🚀 ~ file: SelectOptions.tsx:52 ~ abc", abc);
+  // console.log("🚀 ~ file: SelectOptions.tsx:56 ~ optionsSelect", optionsSelect);
+  // recursiveCalculator(data.data);
+  // console.log(
+  //   "🚀 ~ file: SelectOptions.tsx:52 ~ abc",
 
+  // );
+
+  //  console.log(arrdataRecursive(dataUiSelect));
   useEffect(() => {
     dispatch(initDataUI({ data: dataUiSelect }));
   }, [dispatch]);
 
   let platArrDataSe = platArrData(optionsSelect);
 
-  const handleSearch = (label: string) => {
-    if (label !== "") {
-      platArrDataSe = _.filter(
-        platArrData(optionsSelect),
-        (opt) =>
-          _.indexOf(_.toLower(_.toString(opt.label)), _.toLower(label)) > -1
-      );
-    } else {
-      platArrDataSe = platArrData(optionsSelect);
-    }
-
-    dispatch(addSelectoptions(platArrDataSe));
-
-    return platArrDataSe;
+  const hanldeOnchangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const label = e.target.value;
+    setInputSearch(label);
   };
+
+  if (inputSearch !== "") {
+    platArrDataSe = _.filter(
+      platArrData(optionsSelect),
+      (item) =>
+        _.indexOf(_.toLower(_.toString(item.label)), _.toLower(inputSearch)) >
+        -1
+    );
+  }
 
   const haveItemSelected = _.some(platArrDataSe, ["isSelected", true]);
 
@@ -192,23 +190,18 @@ const SelectOptions = ({
             typeRender={typeRender}
             // optionsSelect={optionsSelect}
             platArrData={platArrDataSe}
-            handleSearch={handleSearch}
+            inputSearch={inputSearch}
+            hanldeOnchangeSearch={hanldeOnchangeSearch}
           />
 
-          <>
-            {/* {_.size(optionsSelect) > 0 &&
-              _.map(platArrData(optionsSelect), (opt) => ( */}
-            <Options
-              typeRender={typeRender}
-              //   options={opt}
-              platArrData={platArrDataSe}
-              // key={opt.value}
-              handleCloseOptions={handleCloseOptions}
-              typeSelect={typeSelect}
-              deleteOptionAllSelected={deleteOptionAllSelected}
-            />
-            {/* ))} */}
-          </>
+          <Options
+            typeRender={typeRender}
+            platArrData={platArrDataSe}
+            data={arrdataRecursive(optionsSelect)}
+            handleCloseOptions={handleCloseOptions}
+            typeSelect={typeSelect}
+            deleteOptionAllSelected={deleteOptionAllSelected}
+          />
         </div>
       )}
     </div>
