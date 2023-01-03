@@ -1,17 +1,12 @@
 .root {
     background-color: #fff;
-    /* border: 1px solid #007bdb; */
     border-radius: 1px;
-    /* box-shadow: 1px 1px 5px rgb(0 0 0 / 50%); */
     color: #41362f;
-
     font-weight: 400;
     left: 0;
     list-style: none;
-    /* margin: 2px 0 0; */
     min-width: 0;
     padding: 0;
-    /* position: absolute; */
     right: 0;
     top: 100%;
     border-top: 0;
@@ -21,12 +16,57 @@
     list-style: none;
 }
 
+.root .listItemOptionsTree {
+    position: relative;
+    padding-left: 20px;
+    max-height: 27rem;
+    overflow: auto;
+}
+
+.root .listItemOptionsTree .optionsTree {
+    position: relative;
+}
+
+.root .listItemOptionsTree .optionsTree .itemTrees {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.root .listItemOptionsTree .optionsTree .listItemTree {
+    position: relative;
+}
+
+.root .listItemOptionsTree .optionsTree .listItemTree::before {
+    border-left: 1px dashed #a79d95;
+    height: calc(100% - 9px);
+    top: -11px;
+    width: 1px;
+    content: '';
+    left: 12px;
+    position: absolute;
+}
+
+.root .listItemOptionsTree .optionsTree .listItemTree .optionsTree {
+    position: relative;
+}
+
+.root .listItemOptionsTree .optionsTree .listItemTree .optionsTree::after {
+    border-top: 1px dashed #a79d95;
+    height: 1px;
+    top: 19px;
+    width: 29px;
+    content: '';
+    left: -26px;
+    position: absolute;
+}
+
 .listItemOptions {
     margin-bottom: 0;
     max-height: 27rem;
     overflow-y: auto;
 }
-
 
 .itemOption {
     -st-states: active;
@@ -36,7 +76,6 @@
     transition: all 0.3s;
 }
 
-
 .itemOption:active {
     background-color: #e0f6fe;
 }
@@ -45,8 +84,8 @@
     background-color: #e3e3e3;
 }
 
-
 .itemOptionTree {
+    -st-states: isShowCheck;
     margin: 0;
     padding: 0.6875em 1em;
     display: flex;
@@ -54,6 +93,7 @@
     gap: 10px;
     cursor: pointer;
     width: 100%;
+    margin-left: 3px;
 }
 
 .itemOptionTree:hover {
@@ -62,21 +102,14 @@
 
 .itemOptionTree:focus {
     background-color: #e3e3e3;
-    outline: none;
+    /* outline: none; */
 }
 
+.itemOptionTree:isShowCheck {
+ background-color: #e0f6fe;
 
-.itemTrees {
-    display: flex;
-    align-items: center;
-    width: 100%;
 }
 
 .toggleItems {
     cursor: pointer;
-}
-
-.listItemOptionsTree {
-    max-height: 27rem;
-    overflow: auto;
 }

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState, KeyboardEvent, useRef } from "react";
 import FilterOptions from "../FilterOptions/FilterOptions";
 import _, { flatMap } from "lodash";
 import { DATA_UI, UiSelect, addSelectoptions } from "../../stores/ReduxStore";
@@ -43,109 +43,45 @@ OptionsProps) => {
     const currentOption = _.cloneDeep(option);
     currentOption["groupOptions"] = [];
 
-    let currentSelectedData = _.cloneDeep(selectedData);
-
-    if (_.find(currentSelectedData, currentOption)) {
-      const newSelectedData = [];
-      _.each(currentSelectedData, (option) => {
-        if (option.value !== currentOption.value) {
-          newSelectedData.push(option);
-        }
-      });
-
-      dispatch(addSelectoptions(newSelectedData));
+    if (typeSelect === "single") {
+      selectedData = _.cloneDeep(selectedData);
+      selectedData = [currentOption];
+      dispatch(addSelectoptions(selectedData));
+      // setTimeout(() => {
+      //   set
+      // })
     } else {
-      currentSelectedData.push(currentOption);
-      dispatch(addSelectoptions(currentSelectedData));
+      let currentSelectedData = _.cloneDeep(selectedData);
+
+      if (_.find(currentSelectedData, currentOption)) {
+        const newSelectedData: any = [];
+        _.each(currentSelectedData, (option) => {
+          if (option.value !== currentOption.value) {
+            newSelectedData.push(option);
+          }
+        });
+
+        dispatch(addSelectoptions(newSelectedData));
+      } else {
+        currentSelectedData.push(currentOption);
+        dispatch(addSelectoptions(currentSelectedData));
+      }
     }
-
-    // selectedData = _.cloneDeep(selectedData);
-    // if (typeSelect === "single" && typeRender === "single") {
-    //   // platArrData = _.map(platArrData, (opt) =>
-    //   //   opt.value === value
-    //   //     ? { ...opt, isSelected: true }
-    //   //     : { ...opt, isSelected: false }
-    //   // );
-    //   _.forEach(platArrData, (opt) => {
-    //     if (opt.value === value) {
-    //       selectedData?.push({ ...opt, isSelected: !selected });
-    //     }
-    //   });
-    //   dispatch(addSelectoptions(selectedData));
-    //   setTimeout(() => {
-    //     handleCloseOptions();
-    //   }, 100);
-    // } else if (typeSelect === "multi" && typeRender === "single") {
-    //   // platArrData = _.map(platArrData, (opt) =>
-    //   //   opt.value === value ? { ...opt, isSelected: !selected } : { ...opt }
-    //   // );
-
-    //   let newSelecteData: any = _.cloneDeep(selectedData);
-
-    //   newSelecteData = _.filter(newSelecteData, (opt) => opt.value !== value);
-
-    //   _.forEach(platArrData, (opt) => {
-    //     if (opt.value === value) {
-    //       if (!_.find(newSelecteData, { value: value })) {
-    //         newSelecteData?.push({
-    //           ...opt,
-    //           isSelected: !selected,
-    //           groupOptions: null,
-    //         });
-    //       }
-    //     }
-    //   });
-
-    //   // const a = _.find(newSelecteData, { value: value, isSelected: true });
-
-    //   // newSelecteData = _.map(newSelecteData, (item) =>
-    //   //   item.value === a.value ? { ...item, isSelected: !a.isSelected } : item
-    //   // );
-    //   dispatch(addSelectoptions(newSelecteData));
-    // }
-
-    // if (typeRender === "tree") {
-    //   let newSelecteData: any = _.cloneDeep(selectedData);
-
-    //   //  newSelecteData = _.filter(newSelecteData, (opt) => opt.value !== value);
-
-    //   const handleAdd = (arr: any) => {
-    //     _.forEach(arr, (opt) => {
-    //       if (opt.value === value) {
-    //         if (!_.find(newSelecteData, { value: value })) {
-    //           newSelecteData?.push({
-    //             ...opt,
-    //             isSelected: !selected,
-    //             groupOptions: null,
-    //           });
-    //         }
-    //       }
-    //       if (opt.groupOptions) {
-    //         handleAdd(opt.groupOptions);
-    //       }
-    //     });
-    //   };
-    //   handleAdd(data);
-    //   // data = _.map(_.cloneDeep(data), (opt) =>
-    //   //   opt.value === value ? { ...opt, isSelected: !selected } : opt
-    //   // );
-
-    //   console.log(newSelecteData);
-    //   dispatch(addSelectoptions(newSelecteData));
-    // }
   };
-
   console.log(dataStore);
 
   const handleOnMouseEnter = (e: any, value?: string, selected?: boolean) => {
-    console.log("a");
+    // console.log("a");
   };
   const handleOnMouseLeave = () => {
-    console.log("bb");
+    //   console.log("bb");
   };
 
-  const handleKeyDown = () => {
-    console.log("abc");
+  const handleKeyDown = (e: any, option: any) => {
+    if (e.key === "Enter") {
+      handleAddselectOptions(option);
+    }
+    console.log(e);
   };
 
   return (
@@ -153,16 +89,21 @@ OptionsProps) => {
       <>
         {typeRender === "single" && (
           <div className={st(classes.listItemOptions)}>
-            {_.map(platArrData, (opt) => (
+            {_.map(platArrData, (opt, index) => (
               <div
-                className={st(classes.itemOption, { active: opt?.isSelected })}
+                className={st(classes.itemOption, {
+                  active: _.find(selectedData, { value: opt.value })
+                    ? true
+                    : false,
+                })}
                 onClick={() => handleAddselectOptions(opt)}
                 key={opt.value}
                 onMouseEnter={(e) =>
                   handleOnMouseEnter(e, opt.value, opt?.isSelected)
                 }
                 onMouseLeave={handleOnMouseLeave}
-                onKeyDown={handleKeyDown}
+                onKeyDown={(e) => handleKeyDown(e, opt)}
+                tabIndex={0}
               >
                 {opt.label}
               </div>
@@ -172,7 +113,7 @@ OptionsProps) => {
 
         {typeRender === "tree" && (
           <ul className={st(classes.listItemOptionsTree)}>
-            {_.map(data, (opt) => (
+            {_.map(data, (opt, index) => (
               <OptionsTree
                 data={opt}
                 key={opt}
@@ -184,6 +125,7 @@ OptionsProps) => {
                 handleAddselectOptions={handleAddselectOptions}
                 showLevel={showLevel}
                 selectedData={selectedData}
+                //  index={index}
               />
             ))}
           </ul>
@@ -203,6 +145,7 @@ export type OptionsTreeProps = {
   handleAddselectOptions?: any;
   showLevel?: any;
   selectedData?: any;
+  index?: string;
 };
 
 const OptionsTree = ({
@@ -215,9 +158,11 @@ const OptionsTree = ({
   handleAddselectOptions,
   showLevel,
   selectedData,
+  index,
 }: OptionsTreeProps) => {
   const hashChild = data.groupOptions ? true : false;
   const [isShow, setIsShow] = useState(false);
+  const currentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (hashChild && showLevel > data.level) {
@@ -231,7 +176,30 @@ const OptionsTree = ({
     setIsShow(!isShow);
   };
 
-  const isShowCheck = _.find(selectedData, { value: data.value });
+  const isShowCheck = _.find(selectedData, { value: data.value })
+    ? true
+    : false;
+
+  const handleKeyDownOption = (e: KeyboardEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (e.key === "ArrowUp") {
+      console.log("38", e);
+      // e.currentTarget.previousSibling &&
+      //   e.currentTarget.previousSibling.focus();
+      //currentRef.current.focus();
+    }
+
+    if (e.key === "ArrowDown") {
+      console.log("40", e);
+      //  e.currentTarget.nextSibling && e.currentTarget.nextSibling.focus();
+      // currentRef.current.focus();
+    }
+
+    if (e.key === "Enter" || e.keyCode === 32) {
+      console.log("Enter");
+      handleAddselectOptions(data);
+    }
+  };
 
   return (
     <li className={st(classes.optionsTree)}>
@@ -246,8 +214,9 @@ const OptionsTree = ({
         </span>
 
         <div
-          className={st(classes.itemOptionTree)}
+          className={st(classes.itemOptionTree, { isShowCheck })}
           onClick={() => handleAddselectOptions(data)}
+          onKeyDown={handleKeyDownOption}
           tabIndex={0}
         >
           {isShowCheck ? <SquareTick /> : <Square />}
@@ -257,7 +226,7 @@ const OptionsTree = ({
 
       {hashChild && isShow && (
         <ul className={st(classes.listItemTree)}>
-          {_.map(data.groupOptions, (opt) => (
+          {_.map(data.groupOptions, (opt, indexs) => (
             <OptionsTree
               data={opt}
               key={opt.value}
@@ -269,6 +238,7 @@ const OptionsTree = ({
               handleAddselectOptions={handleAddselectOptions}
               showLevel={showLevel}
               selectedData={selectedData}
+              // index={indexs}
             />
           ))}
         </ul>
