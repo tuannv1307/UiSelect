@@ -7,6 +7,8 @@ function App(props: {
   typeRender?: "single" | "tree";
   typeSearch?: "online" | "offline";
   typeSelect?: "single" | "multi";
+  showLevel?: number;
+  isShowOption?: boolean;
   options?: {}[];
 }) {
   const store = initStore();

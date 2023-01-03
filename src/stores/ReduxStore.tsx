@@ -3,17 +3,22 @@ import type { ActionTypes } from "./ActionTypes";
 import _ from "lodash";
 
 export type DATA_UI = {
-  value: string;
-  label: string;
-  groupOptions: {}[];
+  value?: string;
+  label?: string;
+  groupOptions?: {}[];
 };
 
 export type UiSelect = {
   data?: {}[];
+  flatData?: {}[];
+
+  selectedData?: [];
 };
 
 const initState: UiSelect = {
   data: [],
+  flatData: [],
+  selectedData: [],
 };
 
 const AppStore = createSlice<UiSelect, ActionTypes>({
@@ -25,20 +30,37 @@ const AppStore = createSlice<UiSelect, ActionTypes>({
       state.data = [...data];
     },
 
-    addSelectoptions: (state, action) => {
-      const arrSelect = action.payload;
-
-      state.data = arrSelect;
+    initFlatData: (state, action) => {
+      const { flatData } = action.payload;
+      state.flatData = [...flatData];
     },
+
+    addSelectoptions: (state, action) => {
+      let arrSelect = action.payload;
+
+      // let arrSelected = _.cloneDeep(state.selectedData);
+      // arrSelected = arrSelect;
+
+      // let arrFlatData = _.cloneDeep(state.flatData);
+      // arrFlatData = arrSelect;
+
+      state.selectedData = arrSelect;
+      //  state.flatData = _.cloneDeep(arrFlatData);
+    },
+
     deleteOptionSelected: (state, action) => {
       const arrDelete = action.payload;
 
-      state.data = arrDelete;
+      state.selectedData = arrDelete;
     },
   },
 });
 
-export const { initDataUI, addSelectoptions, deleteOptionSelected } =
-  AppStore.actions;
+export const {
+  initDataUI,
+  initFlatData,
+  addSelectoptions,
+  deleteOptionSelected,
+} = AppStore.actions;
 
 export default AppStore.reducer;

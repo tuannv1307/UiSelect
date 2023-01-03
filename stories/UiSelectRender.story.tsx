@@ -16,6 +16,7 @@ const Demo = () => (
     typeSelect="single"
     typeSearch="offline"
     options={data}
+    showLevel={2}
   />
 );
 
@@ -25,6 +26,7 @@ const Demo1 = () => (
     typeSelect="multi"
     typeSearch="offline"
     options={data}
+    showLevel={2}
   />
 );
 
@@ -34,6 +36,7 @@ const Demo2 = () => (
     typeSelect="multi"
     typeSearch="offline"
     options={data}
+    showLevel={2}
   />
 );
 export default {
@@ -44,8 +47,8 @@ export default {
     header({ title: "select" }),
 
     // demo({
-    //   title: "Demo 1",
-    //   component: <App />,
+    //   title: "Demo",
+    //   component: <Demo />,
     // }),
 
     // demo({

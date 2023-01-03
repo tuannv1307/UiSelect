@@ -139,11 +139,19 @@ export const platArrData = (arrData?: []) => {
     _.forEach(arrData, (item) => {
       if (item.groupOptions) {
         newArr.push({
+          ...item,
           value: item.value,
           label: item.label,
+          groupOptions: null,
         });
         handleArr(item.groupOptions);
-      } else newArr.push({ ...item, value: item.value, label: item.label });
+      } else
+        newArr.push({
+          ...item,
+          value: item.value,
+          label: item.label,
+          groupOptions: null,
+        });
     });
   };
   handleArr(arrData);

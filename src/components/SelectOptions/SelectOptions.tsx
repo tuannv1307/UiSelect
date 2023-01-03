@@ -7,6 +7,7 @@ import {
   addSelectoptions,
   deleteOptionSelected,
   initDataUI,
+  initFlatData,
 } from "../../stores/ReduxStore";
 import { arrdataRecursive, dataUiSelect, platArrData } from "../../constants";
 import Options from "../Options/Options";
@@ -19,6 +20,7 @@ export type SelectOptionsProps = {
   typeRender?: "single" | "tree";
   typeSearch?: "online" | "offline";
   typeSelect?: "single" | "multi";
+  showLevel?: number;
   options?: {}[];
 };
 const SelectOptions = ({
@@ -26,6 +28,7 @@ const SelectOptions = ({
   typeSearch,
   options,
   typeSelect,
+  showLevel,
 }: SelectOptionsProps) => {
   let data: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
@@ -48,7 +51,9 @@ const SelectOptions = ({
   const handleCloseOptions = () => {
     setisShowOptions(false);
   };
+
   optionsSelect = data.data;
+  //
   // console.log("🚀 ~ file: SelectOptions.tsx:56 ~ optionsSelect", optionsSelect);
   // recursiveCalculator(data.data);
   // console.log(
@@ -61,7 +66,16 @@ const SelectOptions = ({
     dispatch(initDataUI({ data: dataUiSelect }));
   }, [dispatch]);
 
-  let platArrDataSe = platArrData(optionsSelect);
+  useEffect(() => {
+    dispatch(initFlatData({ flatData: platArrData(optionsSelect) }));
+  }, [dispatch, optionsSelect]);
+
+  let platArrDataSe = data.flatData;
+
+  optionsSelect = arrdataRecursive(optionsSelect);
+  platArrDataSe = platArrData(optionsSelect);
+
+  let selectedData: any = data.selectedData;
 
   const hanldeOnchangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const label = e.target.value;
@@ -70,27 +84,27 @@ const SelectOptions = ({
 
   if (inputSearch !== "") {
     platArrDataSe = _.filter(
-      platArrData(optionsSelect),
-      (item) =>
+      platArrDataSe,
+      (item: any) =>
         _.indexOf(_.toLower(_.toString(item.label)), _.toLower(inputSearch)) >
         -1
     );
   }
+  // console.log(selectedData);
 
-  const haveItemSelected = _.some(platArrDataSe, ["isSelected", true]);
+  const haveItemSelected = _.some(selectedData, ["isSelected", true]);
 
   const deleteOptionAllSelected = (type?: string, make?: string) => {
     let arr: any = [];
     if (type === "CLEAR_ALL" && make === "All") {
-      arr = _.cloneDeep(platArrDataSe);
-      arr = _.map(arr, (opt) => ({ ...opt, isSelected: false }));
+      arr = [];
+      //  _.cloneDeep(platArrDataSe);
+      // arr = _.map(arr, (opt) => ({ ...opt, isSelected: false }));
       dispatch(deleteOptionSelected(arr));
     }
     if (type === "DELETE_ITEM") {
-      arr = _.cloneDeep(platArrDataSe);
-      arr = _.map(arr, (opt) =>
-        opt.value === make ? { ...opt, isSelected: false } : opt
-      );
+      arr = _.cloneDeep(selectedData);
+      arr = _.filter(arr, (opt) => opt.value !== make);
     }
 
     dispatch(deleteOptionSelected(arr));
@@ -122,7 +136,7 @@ const SelectOptions = ({
             <>
               {typeSelect === "single" && (
                 <>
-                  {_.map(optionsSelect, (opt) => (
+                  {_.map(selectedData, (opt: any) => (
                     <div key={opt?.value}>
                       {opt?.isSelected && (
                         <div
@@ -140,7 +154,7 @@ const SelectOptions = ({
 
               {typeSelect === "multi" && (
                 <>
-                  {_.map(optionsSelect, (opt) => (
+                  {_.map(selectedData, (opt: any) => (
                     <span key={opt?.value}>
                       {opt?.isSelected && (
                         <div
@@ -197,10 +211,12 @@ const SelectOptions = ({
           <Options
             typeRender={typeRender}
             platArrData={platArrDataSe}
-            data={arrdataRecursive(optionsSelect)}
+            data={optionsSelect}
             handleCloseOptions={handleCloseOptions}
             typeSelect={typeSelect}
             deleteOptionAllSelected={deleteOptionAllSelected}
+            showLevel={showLevel}
+            isShowOption={false}
           />
         </div>
       )}

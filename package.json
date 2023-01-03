@@ -75,6 +75,7 @@
     "html-webpack-plugin": "^5.5.0",
     "linkify-it": "^4.0.1",
     "lodash-webpack-plugin": "^0.11.6",
+    "svg-url-loader": "^8.0.0",
     "tsconfig-paths-webpack-plugin": "^3.5.2",
     "webpack": "^5.72.0",
     "webpack-bundle-analyzer": "^4.5.0",
