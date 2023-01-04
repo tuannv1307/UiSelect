@@ -12,10 +12,12 @@
 
     white-space: normal;
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .iconDelete {
-
+    cursor: pointer;
     color: rgb(204, 204, 204);
 }
 
@@ -75,6 +77,10 @@
     /* min-height: 3.2rem; */
     padding-right: 5rem;
     white-space: normal;
+}
+
+.text {
+    padding-left: 14px;
 }
 
 .itemData {

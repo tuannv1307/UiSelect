@@ -1,24 +1,36 @@
-import React, { ChangeEvent, memo, useState } from "react";
+import { ChangeEvent, memo, useEffect, useRef } from "react";
 import _ from "lodash";
 
 import { st, classes } from "./FilterOptions.st.css";
+import type { DATA_UI, UiSelect } from "../../stores/ReduxStore";
+import { useSelector } from "react-redux";
 
 export type FilterOptionsProps = {
   typeRender?: "single" | "tree";
   handleSearch?: any;
-  platArrData?: any;
-  inputSearch: any;
-  hanldeOnchangeSearch: any;
+  platArrData?: DATA_UI[];
+  inputSearch: string;
+  hanldeOnchangeSearch: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const FilterOptions = ({
-  typeRender,
-  handleSearch,
   platArrData,
   inputSearch,
   hanldeOnchangeSearch,
 }: FilterOptionsProps) => {
-  // console.log(platArrData);
+  const dataStore: UiSelect = useSelector(
+    (state: { ui_select: UiSelect }) => state.ui_select
+  );
+
+  const refInputFilter = useRef<HTMLInputElement>(null);
+
+  const refInput = dataStore.refInputSearch;
+
+  useEffect(() => {
+    if (refInputFilter && refInputFilter.current) {
+      refInputFilter.current.focus();
+    }
+  }, [refInput]);
 
   return (
     <div className={st(classes.root)}>
@@ -30,6 +42,7 @@ const FilterOptions = ({
             onChange={hanldeOnchangeSearch}
             value={inputSearch}
             tabIndex={-1}
+            ref={refInputFilter}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"

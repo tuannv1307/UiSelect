@@ -1,24 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { ActionTypes } from "./ActionTypes";
-import _ from "lodash";
 
 export type DATA_UI = {
   value?: string;
   label?: string;
-  groupOptions?: {}[];
+  groupOptions?: [];
+  level?: number;
+  path?: string;
 };
 
 export type UiSelect = {
   data?: {}[];
   flatData?: {}[];
 
-  selectedData?: [];
+  selectedData?: DATA_UI[];
+  refInputSearch?: boolean;
+  elementFocused?: [] | undefined;
 };
 
 const initState: UiSelect = {
   data: [],
   flatData: [],
   selectedData: [],
+  refInputSearch: false,
+  elementFocused: undefined,
 };
 
 const AppStore = createSlice<UiSelect, ActionTypes>({
@@ -38,20 +43,23 @@ const AppStore = createSlice<UiSelect, ActionTypes>({
     addSelectoptions: (state, action) => {
       let arrSelect = action.payload;
 
-      // let arrSelected = _.cloneDeep(state.selectedData);
-      // arrSelected = arrSelect;
-
-      // let arrFlatData = _.cloneDeep(state.flatData);
-      // arrFlatData = arrSelect;
-
       state.selectedData = arrSelect;
-      //  state.flatData = _.cloneDeep(arrFlatData);
     },
 
     deleteOptionSelected: (state, action) => {
       const arrDelete = action.payload;
 
       state.selectedData = arrDelete;
+    },
+
+    setRefInputSearch: (state, action) => {
+      const refInput = action.payload;
+
+      state.refInputSearch = refInput;
+    },
+
+    changeElementFocused: (state, action) => {
+      state.elementFocused = action.payload;
     },
   },
 });
@@ -61,6 +69,8 @@ export const {
   initFlatData,
   addSelectoptions,
   deleteOptionSelected,
+  setRefInputSearch,
+  changeElementFocused,
 } = AppStore.actions;
 
 export default AppStore.reducer;

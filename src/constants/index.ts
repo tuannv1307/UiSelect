@@ -1,4 +1,5 @@
 import _ from "lodash";
+import type { DATA_UI } from "../stores/ReduxStore";
 
 export const dataUiSelect = [
   {
@@ -134,8 +135,8 @@ export const dataUiSelect = [
 ];
 
 export const platArrData = (arrData?: []) => {
-  let newArr: any = [];
-  const handleArr = (arrData?: any) => {
+  let newArr: DATA_UI[] = [];
+  const handleArr = (arrData?: any[]) => {
     _.forEach(arrData, (item) => {
       if (item.groupOptions) {
         newArr.push({

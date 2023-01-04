@@ -52,6 +52,16 @@
     position: relative;
 }
 
+/* .root > .listItemOptionsTree > .optionsTree > .listItemTree > .optionsTree::before {
+    border-left: 1px dashed #a79d95;
+    height: calc(100% - 9px);
+    top: -11px;
+    width: 1px;
+    content: '';
+    left: 12px;
+    position: absolute;
+} */
+
 .root .listItemOptionsTree .optionsTree .listItemTree .optionsTree::after {
     border-top: 1px dashed #a79d95;
     height: 1px;
@@ -62,6 +72,16 @@
     position: absolute;
 }
 
+/* .root .listItemOptionsTree .optionsTree .listItemTree::before {
+    border-left: 1px dashed #a79d95;
+    height: calc(100% - 9px);
+    top: -11px;
+    width: 1px;
+    content: '';
+    left: 12px;
+    position: absolute;
+} */
+
 .listItemOptions {
     margin-bottom: 0;
     max-height: 27rem;
@@ -69,23 +89,26 @@
 }
 
 .itemOption {
-    -st-states: active;
+    -st-states: active, isHover;
     cursor: pointer;
     display: block;
     padding: 0.6875em 1em;
     transition: all 0.3s;
+    display: flex;
+    gap: 7px;
+    outline: none;
 }
 
 .itemOption:active {
     background-color: #e0f6fe;
 }
 
-.itemOption:hover {
+.itemOption:isHover {
     background-color: #e3e3e3;
 }
 
 .itemOptionTree {
-    -st-states: isShowCheck;
+    -st-states: isShowCheck, isHover, isHoverMouse;
     margin: 0;
     padding: 0.6875em 1em;
     display: flex;
@@ -94,22 +117,63 @@
     cursor: pointer;
     width: 100%;
     margin-left: 3px;
+    outline: none;
 }
 
-.itemOptionTree:hover {
-    background-color: #e3e3e3;
-}
-
-.itemOptionTree:focus {
-    background-color: #e3e3e3;
-    /* outline: none; */
-}
+/* .itemOptionTree:isHover {
+     background-color: #e3e3e3; 
+}  */
 
 .itemOptionTree:isShowCheck {
- background-color: #e0f6fe;
+    background-color: #e0f6fe;
 
 }
+
+.itemOptionTree:isHover {
+    background-color: #e3e3e3;
+}
+
+.itemOptionTree:isHoverMouse {
+    background-color: #e3e3e3;
+}
+
 
 .toggleItems {
     cursor: pointer;
+}
+
+
+.itemPath {
+    color: #a79d95;
+    font-size: 14px;
+    font-weight: 400;
+    padding-left: 1rem;
+}
+
+
+.done {
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+    border-top: 1px solid #e3e3e3;
+    margin: 0 1rem;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.done > button {
+    border: 1px solid;
+    font-size: 14px;
+    min-width: 130px;
+    background: #e3e3e3;
+    border-color: #adadad;
+    color: #514843;
+    padding: 0.6rem 1em 0.6rem;
+    cursor: pointer;
+}
+
+.done > button:hover {
+    background-color: #dbdbdb;
+    color: #514843;
+    text-decoration: none;
 }

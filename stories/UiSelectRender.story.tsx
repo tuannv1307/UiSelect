@@ -36,7 +36,7 @@ const Demo2 = () => (
     typeSelect="multi"
     typeSearch="offline"
     options={data}
-    showLevel={2}
+    showLevel={4}
   />
 );
 export default {
