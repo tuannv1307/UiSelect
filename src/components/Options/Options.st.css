@@ -89,7 +89,7 @@
 }
 
 .itemOption {
-    -st-states: active, isHover;
+    -st-states: active, isHover, isDisable;
     cursor: pointer;
     display: block;
     padding: 0.6875em 1em;
@@ -105,6 +105,34 @@
 
 .itemOption:isHover {
     background-color: #e3e3e3;
+}
+
+.itemOption:isDisable {
+    position: relative;
+    background-color: transparent;
+    cursor: default;
+}
+
+.itemOption > p{
+    margin: 0;
+}
+
+.itemOption:isDisable > p{
+    opacity: 0.5;
+}
+
+.itemOption:isDisable .numberGroup {
+    border-radius: 50%;
+    width: 20px;
+    height: 18px;
+    background-color: #dddbd9;
+    color: #000;
+    position: absolute;
+    right: 19px;
+    text-align: center;
+    font-weight: 600;
+     
+
 }
 
 .itemOptionTree {

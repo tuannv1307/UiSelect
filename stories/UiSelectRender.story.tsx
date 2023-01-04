@@ -3,9 +3,7 @@ import React from "react";
 import { header, demo } from "wix-storybook-utils/Sections";
 import { CATEGORY } from "./storiesHierarchy";
 import App from "../src/App";
-import SelectOptions from "../src/components/SelectOptions/SelectOptions";
-import { Provider } from "react-redux";
-import { initStore } from "../src/stores/store";
+
 import { dataUiSelect } from "../src/constants";
 
 const data: any = dataUiSelect;
@@ -15,8 +13,8 @@ const Demo = () => (
     typeRender="single"
     typeSelect="single"
     typeSearch="offline"
+    typeGroup="group_single"
     options={data}
-    showLevel={2}
   />
 );
 
@@ -25,6 +23,7 @@ const Demo1 = () => (
     typeRender="single"
     typeSelect="multi"
     typeSearch="offline"
+    typeGroup="group_single"
     options={data}
     showLevel={2}
   />
@@ -46,10 +45,10 @@ export default {
   sections: [
     header({ title: "select" }),
 
-    // demo({
-    //   title: "Demo",
-    //   component: <Demo />,
-    // }),
+    demo({
+      title: "Demo",
+      component: <Demo />,
+    }),
 
     // demo({
     //   title: "Demo 1: single",

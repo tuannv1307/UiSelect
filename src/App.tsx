@@ -7,6 +7,7 @@ function App(props: {
   typeRender?: "single" | "tree";
   typeSearch?: "online" | "offline";
   typeSelect?: "single" | "multi";
+  typeGroup?: "group_single" | "group_tree";
   showLevel?: number;
   isShowOption?: boolean;
   options?: {}[];

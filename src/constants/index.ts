@@ -143,7 +143,6 @@ export const platArrData = (arrData?: []) => {
           ...item,
           value: item.value,
           label: item.label,
-          groupOptions: null,
         });
         handleArr(item.groupOptions);
       } else
@@ -151,7 +150,6 @@ export const platArrData = (arrData?: []) => {
           ...item,
           value: item.value,
           label: item.label,
-          groupOptions: null,
         });
     });
   };

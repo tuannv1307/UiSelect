@@ -27,6 +27,7 @@ export type SelectOptionsProps = {
   typeRender?: "single" | "tree";
   typeSearch?: "online" | "offline";
   typeSelect?: "single" | "multi";
+  typeGroup?: "group_single" | "group_tree";
   showLevel?: number;
   options?: {}[];
 };
@@ -35,6 +36,7 @@ const SelectOptions = ({
   typeSearch,
   options,
   typeSelect,
+  typeGroup,
   showLevel,
 }: SelectOptionsProps) => {
   let data: UiSelect = useSelector(
@@ -113,41 +115,79 @@ const SelectOptions = ({
     dispatch(deleteOptionSelected(arr));
   };
 
-  const scrollViewOption = ({ direction = "up" }) => {
-    if (data?.elementFocused) {
-      const currentElementRect = data.elementFocused.getBoundingClientRect();
-      const wapperRect = $("#wapper-list-option")[0].getBoundingClientRect();
-      // console.log(currentElementRect, wapperRect);
-      if (direction === "up") {
-        // console.log(
-        //   currentElementRect.top - currentElementRect.height,
-        //   wapperRect.top
-        // );
-
-        console.log($("#wapper-list-option").scrollTop(50));
-        if (currentElementRect && currentElementRect.top - 5 < wapperRect.top) {
-          // console.log(
-          //   "Scroll",
-          //   currentElementRect.top + currentElementRect.height,
-          //   wapperRect.top
-          // );
-          // if (
-          //   $(data.elementFocused)[0] !== undefined &&
-          //   $(data.elementFocused)[0] !== null
-          // )
-          // $(data.elementFocused)[0]?.scrollIntoView({ block: "start" });
-          // $(data.elementFocused)[0]?.scrollIntoView({});
-          // console.log();
-          // $(data.elementFocused).scrollIntoView({ block: "start" });
-        }
-      }
+  const scrollViewOption = (type?: string) => {
+    if (type === "up") {
+      // if (data?.elementFocused) {
+      //   const currentElementRect = data.elementFocused.getBoundingClientRect();
+      //   let listWapperOptions = $("#wapper-list-option")[0];
+      //   const wapperRect = $("#wapper-list-option")[0].getBoundingClientRect();
+      //   // console.log(currentElementRect, wapperRect);
+      //   // console.log(
+      //   //   currentElementRect.top - currentElementRect.height,
+      //   //   wapperRect.top
+      //   // );
+      //   //  console.log("Scroll", currentElementRect, wapperRect);
+      //   //console.log($("#wapper-list-option").scrollTop(50));
+      //   if (
+      //     currentElementRect &&
+      //     currentElementRect.top - 40 < wapperRect.top
+      //   ) {
+      //     console.log("Scroll up", currentElementRect, wapperRect);
+      //     // if (
+      //     //   $(data.elementFocused)[0] !== undefined &&
+      //     //   $(data.elementFocused)[0] !== null
+      //     // ){
+      //     // }
+      //     $("#wapper-list-option")[0].scrollIntoView({
+      //       behavior: "smooth",
+      //       block: "start",
+      //     });
+      //     // $(data.elementFocused)[0]?.scrollIntoView({ block: "start" });
+      //     // console.log();
+      //     // $(data.elementFocused).scrollIntoView({ block: "start" });
+      //   }
+      // }
+    }
+    if (type === "down") {
+      // if (data?.elementFocused) {
+      //   const currentElementRect = data.elementFocused.getBoundingClientRect();
+      //   let listWapperOptions = $("#wapper-list-option");
+      //   const wapperRect =
+      //     listWapperOptions[
+      //       _.size(listWapperOptions) - 1
+      //     ].getBoundingClientRect();
+      //   // console.log(currentElementRect, wapperRect);
+      //   // console.log(
+      //   //   currentElementRect.top - currentElementRect.height,
+      //   //   wapperRect.top
+      //   // );
+      //   //console.log($("#wapper-list-option").scrollTop(50));
+      //   if (
+      //     currentElementRect &&
+      //     currentElementRect.bottom > wapperRect.bottom - 40
+      //   ) {
+      //     console.log("Scroll down", currentElementRect, wapperRect);
+      //     // if (
+      //     //   $(data.elementFocused)[0] !== undefined &&
+      //     //   $(data.elementFocused)[0] !== null
+      //     // ){
+      //     // }
+      //     $("#wapper-list-option")[0].scrollIntoView({
+      //       behavior: "smooth",
+      //       block: "end",
+      //     });
+      //     // $(data.elementFocused)[0]?.scrollIntoView({ block: "start" });
+      //     // console.log();
+      //     // $(data.elementFocused).scrollIntoView({ block: "start" });
+      //   }
+      // }
     }
   };
 
   const handleKeyDown = (e?: KeyboardEvent<HTMLDivElement>) => {
     if (e && e.code === "ArrowUp") {
       setIsKeyDowning(true);
-      // scrollViewOption({ direction: "up" });
+      scrollViewOption("up");
       if (data.elementFocused === undefined) {
         const listElement = $('[data-type="option"]');
         dispatch(changeElementFocused(listElement[_.size(listElement) - 1]));
@@ -166,6 +206,7 @@ const SelectOptions = ({
 
     if (e && e.code === "ArrowDown") {
       setIsKeyDowning(true);
+      scrollViewOption("down");
       if (data.elementFocused === undefined) {
         const listElement = $('[data-type="option"]');
         dispatch(changeElementFocused(listElement[0]));
@@ -303,6 +344,7 @@ const SelectOptions = ({
               inputSearch={inputSearch}
               setisShowOptions={setisShowOptions}
               isKeyDowning={isKeyDowning}
+              typeGroup={typeGroup}
             />
           </div>
         )}

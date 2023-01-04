@@ -35,6 +35,7 @@ export type OptionsProps = {
   isKeyDowning?: boolean;
   inputSearch?: string;
   setisShowOptions: (a: boolean) => void;
+  typeGroup?: "group_single" | "group_tree";
 };
 
 const Options = ({
@@ -49,6 +50,7 @@ const Options = ({
   isKeyDowning,
   inputSearch,
   setisShowOptions,
+  typeGroup,
 }: OptionsProps) => {
   const dataStore: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
@@ -109,19 +111,82 @@ const Options = ({
     <div className={st(classes.root)}>
       <>
         {typeRender === "single" && (
-          <div className={st(classes.listItemOptions)}>
-            {_.map(platArrData, (opt) => (
-              <ItemOption
-                opt={opt}
-                handleAddselectOptions={handleAddselectOptions}
-                typeRender={typeRender}
-                typeSelect={typeSelect}
-              />
-            ))}
-          </div>
+          <>
+            {typeGroup !== "group_single" && typeGroup !== "group_tree" ? (
+              <div className={st(classes.listItemOptions)}>
+                {_.map(platArrData, (opt) => (
+                  <ItemOption
+                    opt={opt}
+                    handleAddselectOptions={handleAddselectOptions}
+                    typeRender={typeRender}
+                    typeSelect={typeSelect}
+                  />
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
+
+            {typeGroup === "group_single" ? (
+              <div className={st(classes.listItemOptions)}>
+                {_.map(platArrData, (opt) => (
+                  <ItemOption
+                    opt={opt}
+                    handleAddselectOptions={handleAddselectOptions}
+                    typeRender={typeRender}
+                    typeSelect={typeSelect}
+                    typeGroup={typeGroup}
+                  />
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
+          </>
         )}
 
-        {typeRender === "tree" && (
+        {typeRender === "tree" &&
+          typeGroup !== "group_single" &&
+          typeGroup !== "group_tree" && (
+            <>
+              {inputSearch !== "" ? (
+                <div className={st(classes.listItemOptions)}>
+                  {_.map(platArrData, (opt) => (
+                    <ItemOption
+                      opt={opt}
+                      handleAddselectOptions={handleAddselectOptions}
+                      typeRender={typeRender}
+                      typeSelect={typeSelect}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <ul
+                  className={st(classes.listItemOptionsTree)}
+                  ref={ulWapperRef}
+                  id="wapper-list-option"
+                >
+                  {_.map(data, (opt) => (
+                    <OptionsTree
+                      isKeyDowning={isKeyDowning}
+                      data={opt}
+                      key={opt.value}
+                      typeRender={typeRender}
+                      options={options}
+                      platArrData={platArrData}
+                      handleCloseOptions={handleCloseOptions}
+                      typeSelect={typeSelect}
+                      handleAddselectOptions={handleAddselectOptions}
+                      showLevel={showLevel}
+                      selectedData={selectedData}
+                    />
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+
+        {typeRender === "tree" && typeGroup === "group_single" && (
           <>
             {inputSearch !== "" ? (
               <div className={st(classes.listItemOptions)}>
@@ -172,6 +237,7 @@ export type ItemOptionProps = {
   handleAddselectOptions?: (e: DATA_UI) => void;
   typeRender?: "single" | "tree";
   typeSelect?: "single" | "multi";
+  typeGroup?: "group_single" | "group_tree";
 };
 
 const ItemOption = ({
@@ -179,6 +245,7 @@ const ItemOption = ({
   handleAddselectOptions,
   typeRender,
   typeSelect,
+  typeGroup,
 }: ItemOptionProps) => {
   const dataStore: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
@@ -189,10 +256,14 @@ const ItemOption = ({
   let refInputSearch = dataStore.refInputSearch;
 
   const dispatch = useDispatch();
-
+  const hashChild = opt.groupOptions ? true : false;
   const handleKeyDown = (e?: KeyboardEvent<HTMLDivElement>) => {
     if (e && e.key === "Enter") {
-      handleAddselectOptions && handleAddselectOptions(opt);
+      if (typeGroup === "group_single") {
+        !hashChild && handleAddselectOptions && handleAddselectOptions(opt);
+      } else {
+        handleAddselectOptions && handleAddselectOptions(opt);
+      }
     }
 
     if (e && e.key === "Tab") {
@@ -205,7 +276,7 @@ const ItemOption = ({
   ) => {
     e.preventDefault();
     if (currentRef && currentRef.current) {
-      currentRef.current.focus();
+      // currentRef.current.focus();
       e && handleKeyDown(e);
       dispatch(changeElementFocused(abc));
     }
@@ -219,43 +290,95 @@ const ItemOption = ({
   let abc: any = $(currentRef)[0].current;
   let isHover = currentRef && abc === dataStore.elementFocused;
 
-  useEffect(() => {
-    if (isHover && currentRef && currentRef.current) {
-      currentRef.current.focus();
-    }
-  }, [isHover]);
+  // useEffect(() => {
+  //   if (isHover && currentRef && currentRef.current) {
+  //     currentRef.current.focus();
+  //   }
+  // }, [isHover]);
+
+  const isTypeGroup = typeGroup === "group_single" ? true : false;
+
   return (
-    <div
-      className={st(classes.itemOption, {
-        active: _.find(selectedData, { value: opt.value }) ? true : false,
-        isHover,
-      })}
-      onClick={() => handleAddselectOptions && handleAddselectOptions(opt)}
-      key={opt.value}
-      onMouseEnter={handleOnMouseEnter}
-      onMouseLeave={handleOnMouseLeave}
-      onKeyDown={handleKeyDown}
-      ref={currentRef}
-      tabIndex={0}
-      data-type="option"
-    >
-      {typeRender === "single" ? (
-        ""
-      ) : (
-        <>
-          {_.find(selectedData, { value: opt.value }) ? (
-            <SquareTick />
-          ) : (
-            <Square />
-          )}
-        </>
+    <>
+      {typeGroup !== "group_single" && typeGroup !== "group_tree" && (
+        <div
+          className={st(classes.itemOption, {
+            active: _.find(selectedData, { value: opt.value }) ? true : false,
+            isHover,
+          })}
+          onClick={() => handleAddselectOptions && handleAddselectOptions(opt)}
+          key={opt.value}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
+          onKeyDown={handleKeyDown}
+          ref={currentRef}
+          tabIndex={0}
+          data-type="option"
+        >
+          <>
+            {typeRender === "single" ? (
+              ""
+            ) : (
+              <>
+                {_.find(selectedData, { value: opt.value }) ? (
+                  <SquareTick />
+                ) : (
+                  <Square />
+                )}
+              </>
+            )}
+
+            {opt.label}
+            <span className={st(classes.itemPath)}>
+              {typeRender === "single" ? (
+                ""
+              ) : (
+                <>{opt.path !== " / " && opt.path}</>
+              )}
+            </span>
+          </>
+        </div>
       )}
 
-      {opt.label}
-      <span className={st(classes.itemPath)}>
-        {typeRender === "single" ? "" : <>{opt.path !== " / " && opt.path}</>}
-      </span>
-    </div>
+      {typeGroup === "group_single" && (
+        <div
+          className={st(classes.itemOption, {
+            active: _.find(selectedData, { value: opt.value }) ? true : false,
+            isHover,
+            isDisable: _.size(opt.groupOptions) > 0,
+          })}
+          onClick={() =>
+            !hashChild && handleAddselectOptions && handleAddselectOptions(opt)
+          }
+          key={opt.value}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
+          onKeyDown={handleKeyDown}
+          ref={currentRef}
+          tabIndex={0}
+          data-type={`${hashChild ? "" : "option"}`}
+        >
+          <>
+            {typeRender === "single" ? (
+              ""
+            ) : (
+              <>
+                {_.find(selectedData, { value: opt.value }) ? (
+                  <SquareTick />
+                ) : (
+                  <Square />
+                )}
+              </>
+            )}
+            <p>{opt.label} </p>
+
+            <span className={st(classes.numberGroup)}>
+              {opt?.groupOptions && _.size(opt?.groupOptions)}
+            </span>
+          </>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -330,21 +453,19 @@ const OptionsTree = ({
   let abc: any = $(currentRef)[0].current;
   let isHover = currentRef && abc === dataStore.elementFocused;
 
-  let abcd = true;
-
   const handleMouseEnter = (
     e?: KeyboardEvent<HTMLDivElement> | MouseEvent<HTMLDivElement> | any
   ) => {
     if (e && currentRef && currentRef.current) {
-      console.log(isKeyDowning);
       if (isKeyDowning !== undefined && !isKeyDowning) {
         handleKeyDownOption(e);
         dispatch(changeElementFocused(abc));
+        // currentRef.current.focus();
       }
 
       // e.preventDefault();
       // e.stopPropagation();
-      // currentRef.current.focus();
+      //
     }
   };
 
