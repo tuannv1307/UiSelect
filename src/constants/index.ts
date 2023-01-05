@@ -163,6 +163,7 @@ export const arrdataRecursive = (arr: any, currentLevel = 1, path = "") => {
     const currentPath: string = `${path} / ${item.label}`;
     item = { ...item };
     item["level"] = currentLevel;
+    item["isShowOption"] = false;
     item["path"] =
       currentLevel === 0
         ? ""

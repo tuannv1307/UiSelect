@@ -2,12 +2,15 @@ import {
   ChangeEvent,
   KeyboardEvent,
   MouseEvent,
+  memo,
   useEffect,
   useState,
 } from "react";
 import $ from "jquery";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
+import OutSideClick from "react-outside-click-handler";
+import axios from "axios";
 import {
   UiSelect,
   deleteOptionSelected,
@@ -17,10 +20,10 @@ import {
   DATA_UI,
 } from "../../stores/ReduxStore";
 import { arrdataRecursive, dataUiSelect, platArrData } from "../../constants";
-import Options from "../Options/Options";
 import FilterOptions from "../FilterOptions/FilterOptions";
-import OutSideClick from "react-outside-click-handler";
-
+import Options from "../Options/Options";
+import { ReactComponent as DeleteIcon } from "./../svgIcon/DeleteIcon.svg";
+import { ReactComponent as ToggleSelectIcon } from "./../svgIcon/ToggleSelectIcon.svg";
 import { st, classes } from "./SelectOptions.st.css";
 
 export type SelectOptionsProps = {
@@ -30,6 +33,8 @@ export type SelectOptionsProps = {
   typeGroup?: "group_single" | "group_tree";
   showLevel?: number;
   options?: {}[];
+  isSearchOnline?: boolean;
+  url?: string;
 };
 const SelectOptions = ({
   typeRender,
@@ -38,6 +43,8 @@ const SelectOptions = ({
   typeSelect,
   typeGroup,
   showLevel,
+  isSearchOnline,
+  url,
 }: SelectOptionsProps) => {
   let data: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
@@ -56,8 +63,14 @@ const SelectOptions = ({
   };
 
   const handleKeyDownCloseOptions = (e?: KeyboardEvent<HTMLDivElement>) => {
-    if (e && e.key === "Escape") setisShowOptions(!isShowOptions);
+    if (e && e.code === "Escape") setisShowOptions(false);
   };
+
+  useEffect(() => {
+    if (isShowOptions) {
+      $("#ui_select")[0]?.focus();
+    }
+  }, [isShowOptions]);
 
   const handleOutsideCick = () => {
     setisShowOptions(false);
@@ -115,79 +128,32 @@ const SelectOptions = ({
     dispatch(deleteOptionSelected(arr));
   };
 
-  const scrollViewOption = (type?: string) => {
-    if (type === "up") {
-      // if (data?.elementFocused) {
-      //   const currentElementRect = data.elementFocused.getBoundingClientRect();
-      //   let listWapperOptions = $("#wapper-list-option")[0];
-      //   const wapperRect = $("#wapper-list-option")[0].getBoundingClientRect();
-      //   // console.log(currentElementRect, wapperRect);
-      //   // console.log(
-      //   //   currentElementRect.top - currentElementRect.height,
-      //   //   wapperRect.top
-      //   // );
-      //   //  console.log("Scroll", currentElementRect, wapperRect);
-      //   //console.log($("#wapper-list-option").scrollTop(50));
-      //   if (
-      //     currentElementRect &&
-      //     currentElementRect.top - 40 < wapperRect.top
-      //   ) {
-      //     console.log("Scroll up", currentElementRect, wapperRect);
-      //     // if (
-      //     //   $(data.elementFocused)[0] !== undefined &&
-      //     //   $(data.elementFocused)[0] !== null
-      //     // ){
-      //     // }
-      //     $("#wapper-list-option")[0].scrollIntoView({
-      //       behavior: "smooth",
-      //       block: "start",
-      //     });
-      //     // $(data.elementFocused)[0]?.scrollIntoView({ block: "start" });
-      //     // console.log();
-      //     // $(data.elementFocused).scrollIntoView({ block: "start" });
-      //   }
-      // }
+  useEffect(() => {
+    if (data.elementFocused) {
+      const currentElement = data.elementFocused;
+      $(currentElement)[0]?.focus({ preventScroll: true });
+      let listWapperOptions = $("#wapper-list-option");
+
+      const ElStart = $(currentElement).offset()?.top || 0;
+      const ElHeight = $(currentElement).outerHeight() || 40;
+      const ElEnd = ElStart + ElHeight;
+      const WapStart = listWapperOptions.offset()?.top || 0;
+      const WapHeight = listWapperOptions.outerHeight() || 40;
+      const WapEnd = WapStart + WapHeight;
+      const currentScroll = listWapperOptions.scrollTop() || 0;
+
+      if (ElStart < WapStart) {
+        listWapperOptions.scrollTop(currentScroll - (WapStart - ElStart));
+      } else if (ElEnd > WapEnd) {
+        listWapperOptions.scrollTop(currentScroll + (ElEnd - WapEnd));
+      }
     }
-    if (type === "down") {
-      // if (data?.elementFocused) {
-      //   const currentElementRect = data.elementFocused.getBoundingClientRect();
-      //   let listWapperOptions = $("#wapper-list-option");
-      //   const wapperRect =
-      //     listWapperOptions[
-      //       _.size(listWapperOptions) - 1
-      //     ].getBoundingClientRect();
-      //   // console.log(currentElementRect, wapperRect);
-      //   // console.log(
-      //   //   currentElementRect.top - currentElementRect.height,
-      //   //   wapperRect.top
-      //   // );
-      //   //console.log($("#wapper-list-option").scrollTop(50));
-      //   if (
-      //     currentElementRect &&
-      //     currentElementRect.bottom > wapperRect.bottom - 40
-      //   ) {
-      //     console.log("Scroll down", currentElementRect, wapperRect);
-      //     // if (
-      //     //   $(data.elementFocused)[0] !== undefined &&
-      //     //   $(data.elementFocused)[0] !== null
-      //     // ){
-      //     // }
-      //     $("#wapper-list-option")[0].scrollIntoView({
-      //       behavior: "smooth",
-      //       block: "end",
-      //     });
-      //     // $(data.elementFocused)[0]?.scrollIntoView({ block: "start" });
-      //     // console.log();
-      //     // $(data.elementFocused).scrollIntoView({ block: "start" });
-      //   }
-      // }
-    }
-  };
+  }, [data.elementFocused]);
 
   const handleKeyDown = (e?: KeyboardEvent<HTMLDivElement>) => {
     if (e && e.code === "ArrowUp") {
+      e.preventDefault();
       setIsKeyDowning(true);
-      scrollViewOption("up");
       if (data.elementFocused === undefined) {
         const listElement = $('[data-type="option"]');
         dispatch(changeElementFocused(listElement[_.size(listElement) - 1]));
@@ -205,8 +171,8 @@ const SelectOptions = ({
     }
 
     if (e && e.code === "ArrowDown") {
+      e.preventDefault();
       setIsKeyDowning(true);
-      scrollViewOption("down");
       if (data.elementFocused === undefined) {
         const listElement = $('[data-type="option"]');
         dispatch(changeElementFocused(listElement[0]));
@@ -223,24 +189,41 @@ const SelectOptions = ({
     }
   };
 
+  const getOptions = async () => {
+    try {
+      if (url) {
+        const response = await axios.get(url);
+        console.log(response.data);
+        return response.data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getOptions();
+
+  useEffect(() => {
+    if (!isShowOptions || !inputSearch)
+      dispatch(changeElementFocused(undefined));
+  }, [dispatch, inputSearch, isShowOptions]);
+
   return (
-    <div className={st(classes.root)} onKeyDown={handleKeyDownCloseOptions}>
+    <div
+      className={st(classes.root)}
+      onKeyUp={handleKeyDownCloseOptions}
+      id="ui_select"
+      tabIndex={-1}
+    >
       <OutSideClick onOutsideClick={handleOutsideCick}>
         {typeSelect === "multi" && _.size(selectedData) > 0 && (
           <div className={st(classes.delete)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="22"
-              height="22"
-              fill="currentColor"
-              className={st(classes.iconDelete, "bi bi-x-lg")}
-              viewBox="0 0 16 16"
+            <DeleteIcon
+              className={st(classes.iconDelete)}
               onClick={(e: MouseEvent<HTMLOrSVGElement>) =>
                 deleteOptionAllSelected(e, "CLEAR_ALL", "All")
               }
-            >
-              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-            </svg>
+            />
           </div>
         )}
         <div
@@ -249,108 +232,88 @@ const SelectOptions = ({
         >
           {_.size(selectedData) > 0 ? (
             <>
-              {typeSearch === "offline" && (
-                <div className={st(classes.listItemData)}>
-                  {typeSelect === "single" && (
-                    <>
-                      {_.map(selectedData, (opt: DATA_UI) => (
-                        <div key={opt?.value}>
-                          <div
-                            className={st(classes.itemData, {
-                              isSingle: typeSelect === "single",
-                            })}
-                          >
-                            {opt?.label}
-                          </div>
+              <div className={st(classes.listItemData)}>
+                {typeSelect === "single" && (
+                  <>
+                    {_.map(selectedData, (opt: DATA_UI) => (
+                      <div key={opt?.value}>
+                        <div
+                          className={st(classes.itemData, {
+                            isSingle: typeSelect === "single",
+                          })}
+                        >
+                          {opt?.label}
                         </div>
-                      ))}
-                    </>
-                  )}
+                      </div>
+                    ))}
+                  </>
+                )}
 
-                  {typeSelect === "multi" && (
-                    <div>
-                      {_.map(data.selectedData, (opt: DATA_UI) => (
-                        <span key={opt?.value}>
-                          <div
-                            className={st(classes.itemData, {
-                              isMulti: typeSelect === "multi",
-                            })}
-                          >
-                            {opt?.label}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              fill="currentColor"
-                              className={st(classes.closeItem, "bi bi-x-lg")}
-                              viewBox="0 0 16 16"
-                              onClick={(e) =>
-                                deleteOptionAllSelected(
-                                  e,
-                                  "DELETE_ITEM",
-                                  opt.value
-                                )
-                              }
-                            >
-                              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-                            </svg>
-                          </div>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+                {typeSelect === "multi" && (
+                  <div>
+                    {_.map(data.selectedData, (opt: DATA_UI) => (
+                      <span key={opt?.value}>
+                        <div
+                          className={st(classes.itemData, {
+                            isMulti: typeSelect === "multi",
+                          })}
+                        >
+                          {opt?.label}
+
+                          <DeleteIcon
+                            className={st(classes.closeItem)}
+                            onClick={(e) =>
+                              deleteOptionAllSelected(
+                                e,
+                                "DELETE_ITEM",
+                                opt.value
+                              )
+                            }
+                          />
+                        </div>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </>
           ) : (
             <div className={st(classes.text)}>Select...</div>
           )}
 
           <button className={st(classes.toggleSelect, { isShowOptions })}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className={st(classes.svgToggleDown, "bi bi-caret-down-fill")}
-              viewBox="0 0 16 16"
-            >
-              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-            </svg>
+            <ToggleSelectIcon className={st(classes.svgToggleDown)} />
           </button>
         </div>
 
-        {isShowOptions && (
-          <div
-            className={st(classes.options, { isShowOptions })}
-            onKeyDown={handleKeyDown}
-            onKeyUp={() => setIsKeyDowning(false)}
-          >
-            <FilterOptions
-              typeRender={typeRender}
-              platArrData={platArrDataSe}
-              inputSearch={inputSearch}
-              hanldeOnchangeSearch={hanldeOnchangeSearch}
-            />
+        <div
+          className={st(classes.options, { isShowOptions })}
+          onKeyDown={handleKeyDown}
+          onKeyUp={() => setIsKeyDowning(false)}
+        >
+          <FilterOptions
+            typeRender={typeRender}
+            platArrData={platArrDataSe}
+            inputSearch={inputSearch}
+            hanldeOnchangeSearch={hanldeOnchangeSearch}
+          />
 
-            <Options
-              typeRender={typeRender}
-              platArrData={platArrDataSe}
-              data={optionsSelect}
-              handleCloseOptions={handleCloseOptions}
-              typeSelect={typeSelect}
-              showLevel={showLevel}
-              isShowOption={false}
-              inputSearch={inputSearch}
-              setisShowOptions={setisShowOptions}
-              isKeyDowning={isKeyDowning}
-              typeGroup={typeGroup}
-            />
-          </div>
-        )}
+          <Options
+            typeRender={typeRender}
+            platArrData={platArrDataSe}
+            data={optionsSelect}
+            handleCloseOptions={handleCloseOptions}
+            typeSelect={typeSelect}
+            showLevel={showLevel}
+            isShowOption={false}
+            inputSearch={inputSearch}
+            isKeyDowning={isKeyDowning}
+            typeGroup={typeGroup}
+          />
+        </div>
       </OutSideClick>
     </div>
   );
 };
 
-export default SelectOptions;
+export default memo(SelectOptions);

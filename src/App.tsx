@@ -11,6 +11,8 @@ function App(props: {
   showLevel?: number;
   isShowOption?: boolean;
   options?: {}[];
+  isSearchOnline?: boolean;
+  url?: string;
 }) {
   const store = initStore();
 

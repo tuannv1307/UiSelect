@@ -8,23 +8,13 @@ import { dataUiSelect } from "../src/constants";
 
 const data: any = dataUiSelect;
 
-const Demo = () => (
-  <App
-    typeRender="single"
-    typeSelect="single"
-    typeSearch="offline"
-    typeGroup="group_single"
-    options={data}
-  />
-);
-
 const Demo1 = () => (
   <App
-    typeRender="single"
-    typeSelect="multi"
+    typeRender="tree"
+    typeSelect="single"
     typeSearch="offline"
-    typeGroup="group_single"
     options={data}
+    typeGroup="group_tree"
     showLevel={2}
   />
 );
@@ -35,29 +25,25 @@ const Demo2 = () => (
     typeSelect="multi"
     typeSearch="offline"
     options={data}
-    showLevel={4}
+    typeGroup="group_tree"
+    showLevel={2}
   />
 );
 export default {
   category: CATEGORY.COMPONENTS,
-  storyName: "UI select render with data",
+  storyName: "UI select render with options tree group",
 
   sections: [
-    header({ title: "select" }),
+    header({ title: "show options tree group" }),
 
     demo({
-      title: "Demo",
-      component: <Demo />,
+      title: "Demo 1: select single",
+      component: <Demo1 />,
     }),
 
     // demo({
-    //   title: "Demo 1: single",
-    //   component: <Demo1 />,
+    //   title: "Demo 2: select multi",
+    //   component: <Demo2 />,
     // }),
-
-    demo({
-      title: "Demo 2: multi",
-      component: <Demo2 />,
-    }),
   ],
 };

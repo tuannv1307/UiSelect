@@ -1,6 +1,7 @@
 .root {
     position: relative;
     background-color: #fff;
+    outline: none;
 }
 
 .showData {
@@ -9,7 +10,6 @@
     cursor: pointer;
     display: block;
     min-height: 2.2rem;
-
     white-space: normal;
     position: relative;
     display: flex;
@@ -42,18 +42,15 @@
     top: 0;
     padding: 14px;
     cursor: pointer;
-
 }
 
 .toggleSelect:isShowOptions > .svgToggleDown {
     transform: rotate(360deg);
     transition: all 0.2s;
-
 }
 
 .toggleSelect:isShowOptions > .svgToggleDown {
     transform: rotate(180deg);
-
 }
 
 .toggleSelect > .svgToggleDown {
@@ -63,7 +60,6 @@
 
 .toggleSelect > .svgToggleDown {
     transform: rotate(0deg);
-
 }
 
 .showData:isShowOptions {
@@ -71,16 +67,15 @@
 }
 
 .listItemData {
-    /* display: flex; */
     cursor: pointer;
     display: block;
-    /* min-height: 3.2rem; */
     padding-right: 5rem;
     white-space: normal;
 }
 
 .text {
     padding-left: 14px;
+    color: rgb(128, 128, 128);
 }
 
 .itemData {
@@ -110,20 +105,21 @@
     right: 7px;
     top: 6px;
     opacity: .4;
+    height: 16px;
+    width: 16px;
 }
 
 .closeItem:hover {
-
     opacity: 1;
 }
 
 .options {
+    -st-states: isShowOptions;
     background-color: #fff;
     border: 1px solid #007bdb;
     border-radius: 1px;
     box-shadow: 1px 1px 5px rgb(0 0 0 / 50%);
     color: #41362f;
-
     font-weight: 400;
     left: 0;
     list-style: none;
@@ -133,7 +129,11 @@
     position: absolute;
     right: 0;
     top: 100%;
+    display: none;
+}
 
+.options:isShowOptions {
+    display: block;
 }
 
 .delete {

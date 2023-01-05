@@ -15,7 +15,7 @@ export type UiSelect = {
 
   selectedData?: DATA_UI[];
   refInputSearch?: boolean;
-  elementFocused?: [] | undefined;
+  elementFocused?: undefined;
 };
 
 const initState: UiSelect = {
@@ -61,6 +61,10 @@ const AppStore = createSlice<UiSelect, ActionTypes>({
     changeElementFocused: (state, action) => {
       state.elementFocused = action.payload;
     },
+
+    setShowOptions: (state, action) => {
+      state.flatData = action.payload;
+    },
   },
 });
 
@@ -71,6 +75,7 @@ export const {
   deleteOptionSelected,
   setRefInputSearch,
   changeElementFocused,
+  setShowOptions,
 } = AppStore.actions;
 
 export default AppStore.reducer;
