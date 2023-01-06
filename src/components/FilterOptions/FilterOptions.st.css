@@ -7,8 +7,11 @@
 }
 
 .actionSearch {
+    -st-states: isDisabled;
     position: relative;
 }
+
+
 
 .actionSearch > svg {
     position: absolute;
@@ -16,9 +19,91 @@
     top: 6px;
 }
 
+.actionSearch:isDisabled > svg {
+    color: rgb(224, 224, 224);
+}
+
+.iconLoading {
+    -st-states: isLoading;
+    position: absolute;
+    right: 115px;
+    top: -32px;
+    display: none;
+}
+
+.iconLoading:isLoading {
+    display: inline-block;
+}
+
+.loadingSelect {
+    display: inline-block;
+    position: relative;
+}
+
+.loadingSelect div {
+    position: absolute;
+    top: 33px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(128, 128, 128, 0.7);
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.loadingSelect div:nth-child(1) {
+    left: 33px;
+    animation: lds-ellipsis1 0.6s infinite;
+}
+
+.loadingSelect div:nth-child(2) {
+    left: 33px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+
+.loadingSelect div:nth-child(3) {
+    left: 45px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+
+.loadingSelect div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes lds-ellipsis1 {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes lds-ellipsis3 {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes lds-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(10px, 0);
+    }
+}
+
 .inputFilter {
+    -st-states: isSearchable, isDisabled;
     width: calc(100% - 70px);
-    -webkit-appearance: none;
+    /* -webkit-appearance: none; */
     background-color: #fff;
     border: 1px solid #adadad;
     border-radius: 1px;
@@ -32,6 +117,17 @@
     transition: border-color .1s linear;
     padding-right: 3rem;
     vertical-align: baseline;
+    display: none;
+}
+
+.inputFilter:isSearchable {
+    border-color: #007bdb;
+    display: inline-block;
+}
+
+.inputFilter:isDisabled {
+    background-color: rgb(242, 242, 242);
+    border-color: rgb(230, 230, 230);
 }
 
 .inputFilter:focus {
@@ -42,4 +138,19 @@
 .itemsQuality {
     color: #a79d95;
     margin: 1rem 0;
+}
+
+.filtersSearch {
+    margin: 10px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.filtersSearch > span {
+    display: flex;
+    align-items: center;
+}
+
+.filtersSearch > span > input {
+    cursor: pointer;
 }

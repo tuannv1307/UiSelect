@@ -1,0 +1,54 @@
+.root {
+    -st-states: active, isHover, isDisable;
+    cursor: pointer;
+    display: block;
+    padding: 0.6875em 1em;
+    transition: all 0.3s;
+    display: flex;
+    gap: 7px;
+    outline: none;
+}
+
+.root:active {
+    background-color: #e0f6fe;
+}
+
+.root:isHover {
+    background-color: #e3e3e3;
+}
+
+.root:isDisable {
+    position: relative;
+    background-color: transparent;
+    cursor: default;
+}
+
+.root > p {
+    margin: 0;
+}
+
+.root:isDisable > p {
+    opacity: 0.5;
+}
+
+.root:isDisable .numberGroup {
+    border-radius: 50%;
+    width: 20px;
+    height: 18px;
+    background-color: #dddbd9;
+    color: #000;
+    position: absolute;
+    right: 19px;
+    text-align: center;
+    font-weight: 600;
+}
+
+
+
+
+.itemPath {
+    color: #a79d95;
+    font-size: 14px;
+    font-weight: 400;
+    padding-left: 1rem;
+}

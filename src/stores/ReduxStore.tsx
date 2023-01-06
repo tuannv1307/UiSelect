@@ -16,6 +16,7 @@ export type UiSelect = {
   selectedData?: DATA_UI[];
   refInputSearch?: boolean;
   elementFocused?: undefined;
+  isLoading?: boolean;
 };
 
 const initState: UiSelect = {
@@ -24,6 +25,7 @@ const initState: UiSelect = {
   selectedData: [],
   refInputSearch: false,
   elementFocused: undefined,
+  isLoading: false,
 };
 
 const AppStore = createSlice<UiSelect, ActionTypes>({
@@ -42,19 +44,16 @@ const AppStore = createSlice<UiSelect, ActionTypes>({
 
     addSelectoptions: (state, action) => {
       let arrSelect = action.payload;
-
       state.selectedData = arrSelect;
     },
 
     deleteOptionSelected: (state, action) => {
       const arrDelete = action.payload;
-
       state.selectedData = arrDelete;
     },
 
     setRefInputSearch: (state, action) => {
       const refInput = action.payload;
-
       state.refInputSearch = refInput;
     },
 
@@ -64,6 +63,10 @@ const AppStore = createSlice<UiSelect, ActionTypes>({
 
     setShowOptions: (state, action) => {
       state.flatData = action.payload;
+    },
+
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload;
     },
   },
 });
@@ -76,6 +79,7 @@ export const {
   setRefInputSearch,
   changeElementFocused,
   setShowOptions,
+  setIsLoading,
 } = AppStore.actions;
 
 export default AppStore.reducer;

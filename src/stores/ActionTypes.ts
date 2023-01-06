@@ -15,4 +15,5 @@ export type ActionTypes = {
   setRefInputSearch: (state: UiSelect, action: PayloadAction<boolean>) => void;
   changeElementFocused: (state: UiSelect, action: PayloadAction<any>) => void;
   setShowOptions: (state: UiSelect, action: PayloadAction<any>) => void;
+  setIsLoading: (state: UiSelect, action: PayloadAction<boolean>) => void;
 };

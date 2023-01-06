@@ -2,6 +2,15 @@
     position: relative;
     background-color: #fff;
     outline: none;
+    z-index: 1000;
+}
+
+.root:focus {
+    z-index: 100000;
+}
+
+.root:hover {
+    z-index: 100000;
 }
 
 .showData {
@@ -16,9 +25,16 @@
     align-items: center;
 }
 
+
 .iconDelete {
+    -st-states: isClearable;
     cursor: pointer;
     color: rgb(204, 204, 204);
+    display: none;
+}
+
+.iconDelete:isClearable {
+    display: block;
 }
 
 .iconDelete:hover {
@@ -83,7 +99,6 @@
 }
 
 .itemData:isSingle {
-
     padding: 0.5rem 1rem;
 }
 
@@ -98,7 +113,6 @@
     position: relative;
     transition: border-color .1s linear;
 }
-
 
 .closeItem {
     position: absolute;

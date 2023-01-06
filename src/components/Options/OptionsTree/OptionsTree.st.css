@@ -1,0 +1,107 @@
+.root {
+    position: relative;
+}
+
+.root::before {
+    content: '';
+    left: -28px;
+    position: absolute;
+    border-left: 1px dashed #a79d95;
+    height: 100%;
+    top: 0;
+    width: 1px;
+}
+
+.root:last-child::before {
+    height: 1.2rem;
+}
+
+.root .listItemTree .root::after {
+    border-top: 1px dashed #a79d95;
+    height: 1px;
+    top: 19px;
+    width: 29px;
+    content: '';
+    left: -26px;
+    position: absolute;
+}
+
+.root .itemTrees {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.itemTrees {
+    -st-states: isBorder;
+    position: relative;
+}
+
+.itemTrees:isBorder::before {
+    border-left: 1px dashed #a79d95;
+    bottom: 0px;
+    content: '';
+    left: 12px;
+    position: absolute;
+    top: 29px;
+    width: 1px;
+    height: 9px;
+}
+
+.itemOptionTree {
+    -st-states: isShowCheck, isHover, isHoverMouse;
+    margin: 0;
+    padding: 0.6875em 1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-left: 3px;
+    outline: none;
+    position: relative;
+}
+
+.itemOptionTree:isShowCheck {
+    background-color: #e0f6fe;
+}
+
+.itemOptionTree:isHover {
+    background-color: #e3e3e3;
+}
+
+.itemOptionTree:isHoverMouse {
+    background-color: #e3e3e3;
+}
+
+.numberGroupTree {
+    -st-states: isShowNumber;
+    display: none;
+}
+
+.numberGroupTree:isShowNumber {
+    display: block;
+    border-radius: 50%;
+    background-color: #e3e3e3;
+    width: 17px;
+    height: 17px;
+    text-align: center;
+    position: absolute;
+    right: 20px;
+    font-weight: 600;
+}
+
+.listItemTree {
+    -st-states: isShowGroup;
+    display: none;
+    position: relative;
+}
+
+.listItemTree:isShowGroup {
+    display: block;
+}
+
+.toggleItems {
+    cursor: pointer;
+}
