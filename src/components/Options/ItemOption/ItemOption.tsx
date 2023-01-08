@@ -25,6 +25,7 @@ const ItemOption = ({
   typeRender,
   typeGroup,
   isSearchOnline,
+  typeSelect,
 }: ItemOptionProps) => {
   const dataStore: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
@@ -82,7 +83,9 @@ const ItemOption = ({
       onKeyDown={handleKeyDown}
       ref={currentRef}
       tabIndex={0}
-      data-type={typeGroup === "group_single" && hashChild ? "" : "option"}
+      data-type={
+        typeGroup === "group_single" && hashChild ? "" : `option-${typeSelect}`
+      }
     >
       {typeRender === "single" && ""}
 

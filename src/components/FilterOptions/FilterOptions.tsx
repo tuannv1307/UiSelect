@@ -92,7 +92,12 @@ const FilterOptions = ({
 
           {inputSearch !== "" && (
             <>
-              {!isLoading && (
+              {!isSearchOnline && (
+                <div className={st(classes.itemsQuality)}>
+                  {_.size(flatArrDataSelect)} options
+                </div>
+              )}
+              {!isLoading && isSearchOnline && (
                 <div className={st(classes.itemsQuality)}>
                   {_.size(flatArrDataSelect)} options
                 </div>

@@ -2,15 +2,6 @@
     position: relative;
     background-color: #fff;
     outline: none;
-    z-index: 1000;
-}
-
-.root:focus {
-    z-index: 100000;
-}
-
-.root:hover {
-    z-index: 100000;
 }
 
 .showData {
@@ -144,6 +135,7 @@
     right: 0;
     top: 100%;
     display: none;
+    z-index: 4;
 }
 
 .options:isShowOptions {

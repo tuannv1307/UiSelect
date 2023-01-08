@@ -93,7 +93,7 @@ const Options = ({
               {typeGroup !== "group_single" && typeGroup !== "group_tree" ? (
                 <div
                   className={st(classes.listItemOptions)}
-                  id="wapper-list-option"
+                  id={`wapper-list-option-${typeSelect}`}
                 >
                   {_.map(flatArrDataSelect, (opt) => (
                     <ItemOption
@@ -113,7 +113,7 @@ const Options = ({
               {typeGroup === "group_single" ? (
                 <div
                   className={st(classes.listItemOptions)}
-                  id="wapper-list-option"
+                  id={`wapper-list-option-${typeSelect}`}
                 >
                   {_.map(flatArrDataSelect, (opt) => (
                     <ItemOption
@@ -140,7 +140,7 @@ const Options = ({
                 {inputSearch !== "" ? (
                   <div
                     className={st(classes.listItemOptions)}
-                    id="wapper-list-option"
+                    id={`wapper-list-option-${typeSelect}`}
                   >
                     {_.map(flatArrDataSelect, (opt) => (
                       <ItemOption
@@ -157,7 +157,7 @@ const Options = ({
                   <ul
                     className={st(classes.listItemOptionsTree)}
                     ref={ulWapperRef}
-                    id="wapper-list-option"
+                    id={`wapper-list-option-${typeSelect}`}
                   >
                     {_.map(data, (opt) => (
                       <OptionsTree
@@ -181,7 +181,7 @@ const Options = ({
               {inputSearch !== "" ? (
                 <div
                   className={st(classes.listItemOptions)}
-                  id="wapper-list-option"
+                  id={`wapper-list-option-${typeSelect}`}
                 >
                   {_.map(flatArrDataSelect, (opt) => (
                     <ItemOption
@@ -198,7 +198,7 @@ const Options = ({
                 <ul
                   className={st(classes.listItemOptionsTree)}
                   ref={ulWapperRef}
-                  id="wapper-list-option"
+                  id={`wapper-list-option-${typeSelect}`}
                 >
                   {_.map(data, (opt) => (
                     <OptionsTree

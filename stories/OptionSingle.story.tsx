@@ -38,9 +38,9 @@ export default {
       component: <Demo />,
     }),
 
-    // demo({
-    //   title: "Demo 1: select multi",
-    //   component: <Demo1 />,
-    // }),
+    demo({
+      title: "Demo 1: select multi",
+      component: <Demo1 />,
+    }),
   ],
 };

@@ -113,7 +113,7 @@ const OptionsTree = ({
           onKeyDown={handleKeyDownOption}
           tabIndex={0}
           onMouseMove={handleMouseMove}
-          data-type={"option"}
+          data-type={`option-${typeSelect}`}
           ref={currentRef}
         >
           {isShowCheck ? (

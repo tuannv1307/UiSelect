@@ -69,7 +69,6 @@
 
 .itemOptionTree:isHover {
     background-color: #e3e3e3;
-    z-index: 100;
 }
 
 .itemOptionTree:isHoverMouse {

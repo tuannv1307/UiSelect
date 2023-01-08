@@ -178,7 +178,7 @@ const SelectOptions = ({
     if (data.elementFocused) {
       const currentElement = data.elementFocused;
       $(currentElement)[0]?.focus({ preventScroll: true });
-      const listWapperOptions = $("#wapper-list-option");
+      const listWapperOptions = $(`#wapper-list-option-${typeSelect}`);
 
       const ElStart = $(currentElement).offset()?.top || 0;
       const ElHeight = $(currentElement).outerHeight() || 40;
@@ -194,18 +194,19 @@ const SelectOptions = ({
         listWapperOptions.scrollTop(currentScroll + (ElEnd - WapEnd));
       }
     }
-  }, [data.elementFocused]);
+  }, [data.elementFocused, typeSelect]);
 
   const handleKeyDown = (e?: KeyboardEvent<HTMLDivElement>) => {
     if (e && e.code === "ArrowUp") {
       e.preventDefault();
       setIsKeyDowning(true);
       if (data.elementFocused === undefined) {
-        const listElement = $('[data-type="option"]');
+        const listElement = $(`[data-type="option-${typeSelect}"]`);
+
         dispatch(changeElementFocused(listElement[_.size(listElement) - 1]));
       } else {
         const currentFocused: HTMLDivElement | null = data.elementFocused;
-        const listElement = $('[data-type="option"]');
+        const listElement = $(`[data-type="option-${typeSelect}"]`);
         const currentIndex = _.findIndex(listElement, currentFocused);
 
         if (currentIndex === 0) {
@@ -220,11 +221,11 @@ const SelectOptions = ({
       e.preventDefault();
       setIsKeyDowning(true);
       if (data.elementFocused === undefined) {
-        const listElement = $('[data-type="option"]');
+        const listElement = $(`[data-type="option-${typeSelect}"]`);
         dispatch(changeElementFocused(listElement[0]));
       } else {
         const currentFocused: HTMLDivElement | null = data.elementFocused;
-        const listElement = $('[data-type="option"]');
+        const listElement = $(`[data-type="option-${typeSelect}"]`);
         const currentIndex = _.findIndex(listElement, currentFocused);
         if (currentIndex === _.size(listElement) - 1) {
           dispatch(changeElementFocused(listElement[0]));
