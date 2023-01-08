@@ -19,16 +19,16 @@ const Demo1 = () => (
   />
 );
 
-// const Demo2 = () => (
-//   <App
-//     typeRender="tree"
-//     typeSelect="multi"
-//     typeSearch="offline"
-//     options={data}
-//     typeGroup="group_tree"
-//     showLevel={2}
-//   />
-// );
+const Demo2 = () => (
+  <App
+    typeRender="tree"
+    typeSelect="multi"
+    typeSearch="offline"
+    options={data}
+    typeGroup="group_tree"
+    showLevel={2}
+  />
+);
 
 export default {
   category: CATEGORY.COMPONENTS,

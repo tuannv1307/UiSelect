@@ -17,14 +17,14 @@ const Demo = () => (
   />
 );
 
-// const Demo1 = () => (
-//   <App
-//     typeRender="single"
-//     typeSelect="multi"
-//     typeSearch="offline"
-//     options={data}
-//   />
-// );
+const Demo1 = () => (
+  <App
+    typeRender="single"
+    typeSelect="multi"
+    typeSearch="offline"
+    options={data}
+  />
+);
 
 export default {
   category: CATEGORY.COMPONENTS,

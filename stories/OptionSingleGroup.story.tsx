@@ -18,15 +18,15 @@ const Demo = () => (
   />
 );
 
-// const Demo1 = () => (
-//   <App
-//     typeRender="single"
-//     typeSelect="multi"
-//     typeSearch="offline"
-//     typeGroup="group_single"
-//     options={data}
-//   />
-// );
+const Demo1 = () => (
+  <App
+    typeRender="single"
+    typeSelect="multi"
+    typeSearch="offline"
+    typeGroup="group_single"
+    options={data}
+  />
+);
 
 export default {
   category: CATEGORY.COMPONENTS,

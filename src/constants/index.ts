@@ -134,9 +134,9 @@ export const dataUiSelect = [
   },
 ];
 
-export const platArrData = (arrData?: []) => {
-  let newArr: DATA_UI[] = [];
-  const handleArr = (arrData?: any[]) => {
+export const flatArrData = (arrData?: []) => {
+  const newArr: DATA_UI[] = [];
+  const handleArr = (arrData?: DATA_UI[] | undefined) => {
     _.forEach(arrData, (item) => {
       if (item.groupOptions) {
         newArr.push({
@@ -157,8 +157,9 @@ export const platArrData = (arrData?: []) => {
   return newArr;
 };
 
-export const arrdataRecursive = (arr: any, currentLevel = 1, path = "") => {
-  const newArrData: any = [];
+export const arrdataRecursive = (arr?: any, currentLevel = 1, path = "") => {
+  const newArrData: DATA_UI[] | undefined = [];
+
   _.forEach(arr, (item) => {
     const currentPath: string = `${path} / ${item.label}`;
     item = { ...item };

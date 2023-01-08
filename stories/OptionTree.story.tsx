@@ -8,15 +8,16 @@ import { dataUiSelect } from "../src/constants";
 
 const data: any = dataUiSelect;
 
-// const Demo1 = () => (
-//   <App
-//     typeRender="tree"
-//     typeSelect="single"
-//     typeSearch="offline"
-//     options={data}
-//     showLevel={2}
-//   />
-// );
+const Demo1 = () => (
+  <App
+    typeRender="tree"
+    typeSelect="single"
+    typeSearch="offline"
+    options={data}
+    showLevel={2}
+    arrSelectedData={["Bags"]}
+  />
+);
 
 const Demo2 = () => (
   <App
@@ -25,6 +26,7 @@ const Demo2 = () => (
     typeSearch="offline"
     options={data}
     showLevel={2}
+    arrSelectedData={["Bags", "Watches", "Collections"]}
   />
 );
 

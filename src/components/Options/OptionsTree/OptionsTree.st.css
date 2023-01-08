@@ -69,6 +69,7 @@
 
 .itemOptionTree:isHover {
     background-color: #e3e3e3;
+    z-index: 100;
 }
 
 .itemOptionTree:isHoverMouse {
@@ -94,12 +95,14 @@
 
 .listItemTree {
     -st-states: isShowGroup;
-    display: none;
     position: relative;
+    visibility: hidden;
+    display: none;
 }
 
 .listItemTree:isShowGroup {
-    display: block;
+    visibility: visible;
+      display: block;
 }
 
 .toggleItems {

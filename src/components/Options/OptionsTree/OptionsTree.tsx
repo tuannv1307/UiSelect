@@ -7,16 +7,15 @@ import {
   DATA_UI,
   UiSelect,
   changeElementFocused,
-  setRefInputSearch,
+  setIsInputSearchRef,
 } from "../../../stores/ReduxStore";
 
 export type OptionsTreeProps = {
   data?: any;
   typeRender?: "single" | "tree";
   typeSelect?: "single" | "multi";
-  platArrData?: DATA_UI[];
   handleCloseOptions?: () => void;
-  handleAddselectOptions?: (e: any) => void;
+  handleAddselectOptions?: (option?: DATA_UI) => void;
   showLevel?: number;
   selectedData?: DATA_UI[];
   isKeyDowning?: boolean;
@@ -26,7 +25,6 @@ export type OptionsTreeProps = {
 const OptionsTree = ({
   data,
   typeRender,
-  platArrData,
   typeSelect,
   handleAddselectOptions,
   showLevel,
@@ -39,7 +37,7 @@ const OptionsTree = ({
   );
   const hashChild = data.groupOptions ? true : false;
   const currentRef = useRef<HTMLDivElement>(null);
-  let refInputSearch = dataStore.refInputSearch;
+  const isInputSearchRef = dataStore.isInputSearchRef;
   const dispatch = useDispatch();
 
   const getInitShowGroup = () => {
@@ -69,13 +67,13 @@ const OptionsTree = ({
       }
 
       if (e.code === "Tab") {
-        dispatch(setRefInputSearch(!refInputSearch));
+        dispatch(setIsInputSearchRef(!isInputSearchRef));
       }
     }
   };
 
-  let element: any = $(currentRef)[0].current;
-  let isHover = currentRef && element === dataStore.elementFocused;
+  const element: HTMLDivElement | null = $(currentRef)[0].current;
+  const isHover = currentRef && element === dataStore.elementFocused;
 
   const handleMouseMove = () => {
     if (currentRef && currentRef.current) {
@@ -109,12 +107,13 @@ const OptionsTree = ({
           className={st(classes.itemOptionTree, {
             isShowCheck,
             isHover: isHover,
+            isShowGroup,
           })}
           onClick={() => handleAddselectOptions && handleAddselectOptions(data)}
           onKeyDown={handleKeyDownOption}
           tabIndex={0}
           onMouseMove={handleMouseMove}
-          data-type="option"
+          data-type={"option"}
           ref={currentRef}
         >
           {isShowCheck ? (
@@ -156,23 +155,23 @@ const OptionsTree = ({
           )}
         </div>
       </div>
-
-      <ul className={st(classes.listItemTree, { isShowGroup })}>
-        {_.map(data.groupOptions, (opt) => (
-          <OptionsTree
-            data={opt}
-            key={opt.value}
-            typeRender={typeRender}
-            platArrData={platArrData}
-            typeSelect={typeSelect}
-            handleAddselectOptions={handleAddselectOptions}
-            showLevel={showLevel}
-            selectedData={selectedData}
-            isKeyDowning={isKeyDowning}
-            typeGroup={typeGroup}
-          />
-        ))}
-      </ul>
+      {isShowGroup && (
+        <ul className={st(classes.listItemTree, { isShowGroup })}>
+          {_.map(data.groupOptions, (opt) => (
+            <OptionsTree
+              data={opt}
+              key={opt.value}
+              typeRender={typeRender}
+              typeSelect={typeSelect}
+              handleAddselectOptions={handleAddselectOptions}
+              showLevel={showLevel}
+              selectedData={selectedData}
+              isKeyDowning={isKeyDowning}
+              typeGroup={typeGroup}
+            />
+          ))}
+        </ul>
+      )}
     </li>
   );
 };

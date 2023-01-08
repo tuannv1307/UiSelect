@@ -13,7 +13,7 @@ export type OptionsProps = {
   typeGroup?: "group_single" | "group_tree";
   typeSearch?: "online" | "offline";
   isSearchOnline?: boolean;
-  platArrData?: DATA_UI[];
+  flatArrDataSelect?: DATA_UI[];
   handleCloseOptions?: () => void;
   deleteOptionAllSelected?: () => void;
   showLevel?: number;
@@ -21,11 +21,13 @@ export type OptionsProps = {
   isKeyDowning?: boolean;
   inputSearch?: string;
   isLoadingInput?: boolean;
+  setIsFirstLoading?: (e: boolean) => void;
+  selectedData?: DATA_UI[];
 };
 
 const Options = ({
   typeRender,
-  platArrData,
+  flatArrDataSelect,
   handleCloseOptions,
   typeSelect,
   data,
@@ -35,11 +37,13 @@ const Options = ({
   typeGroup,
   isLoadingInput,
   isSearchOnline,
+  setIsFirstLoading,
+  selectedData,
 }: OptionsProps) => {
   const dataStore: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
   );
-  let selectedData: any = dataStore.selectedData;
+
   const ulWapperRef = useRef<HTMLUListElement>(null);
   const isLoading = dataStore.isLoading;
 
@@ -54,11 +58,12 @@ const Options = ({
         selectedData = [currentOption];
         dispatch(addSelectoptions(selectedData));
       } else {
-        let currentSelectedData = _.cloneDeep(selectedData);
+        const currentSelectedData: DATA_UI[] | undefined =
+          _.cloneDeep(selectedData);
 
-        if (_.find(currentSelectedData, currentOption)) {
-          const newSelectedData: any = [];
-          _.each(currentSelectedData, (option) => {
+        if (_.find(selectedData, ["value", currentOption.value])) {
+          const newSelectedData: DATA_UI[] = [];
+          _.each(selectedData, (option) => {
             if (option.value !== currentOption.value) {
               newSelectedData.push(option);
             }
@@ -66,11 +71,13 @@ const Options = ({
 
           dispatch(addSelectoptions(newSelectedData));
         } else {
-          currentSelectedData.push(currentOption);
-          dispatch(addSelectoptions(currentSelectedData));
+          currentSelectedData && currentSelectedData.push(currentOption);
+          currentSelectedData &&
+            dispatch(addSelectoptions(currentSelectedData));
         }
       }
     }
+    _.isFunction(setIsFirstLoading) && setIsFirstLoading(false);
   };
 
   return (
@@ -88,13 +95,14 @@ const Options = ({
                   className={st(classes.listItemOptions)}
                   id="wapper-list-option"
                 >
-                  {_.map(platArrData, (opt) => (
+                  {_.map(flatArrDataSelect, (opt) => (
                     <ItemOption
                       opt={opt}
                       handleAddselectOptions={handleAddselectOptions}
                       typeRender={typeRender}
                       typeSelect={typeSelect}
                       key={opt.value}
+                      isSearchOnline={isSearchOnline}
                     />
                   ))}
                 </div>
@@ -107,7 +115,7 @@ const Options = ({
                   className={st(classes.listItemOptions)}
                   id="wapper-list-option"
                 >
-                  {_.map(platArrData, (opt) => (
+                  {_.map(flatArrDataSelect, (opt) => (
                     <ItemOption
                       opt={opt}
                       handleAddselectOptions={handleAddselectOptions}
@@ -115,6 +123,7 @@ const Options = ({
                       typeSelect={typeSelect}
                       typeGroup={typeGroup}
                       key={opt.value}
+                      isSearchOnline={isSearchOnline}
                     />
                   ))}
                 </div>
@@ -133,13 +142,14 @@ const Options = ({
                     className={st(classes.listItemOptions)}
                     id="wapper-list-option"
                   >
-                    {_.map(platArrData, (opt) => (
+                    {_.map(flatArrDataSelect, (opt) => (
                       <ItemOption
                         opt={opt}
                         handleAddselectOptions={handleAddselectOptions}
                         typeRender={typeRender}
                         typeSelect={typeSelect}
                         key={opt.value}
+                        isSearchOnline={isSearchOnline}
                       />
                     ))}
                   </div>
@@ -155,7 +165,6 @@ const Options = ({
                         data={opt}
                         key={opt.value}
                         typeRender={typeRender}
-                        platArrData={platArrData}
                         typeSelect={typeSelect}
                         handleAddselectOptions={handleAddselectOptions}
                         showLevel={showLevel}
@@ -170,14 +179,18 @@ const Options = ({
           {typeRender === "tree" && typeGroup === "group_tree" && (
             <>
               {inputSearch !== "" ? (
-                <div className={st(classes.listItemOptions)}>
-                  {_.map(platArrData, (opt) => (
+                <div
+                  className={st(classes.listItemOptions)}
+                  id="wapper-list-option"
+                >
+                  {_.map(flatArrDataSelect, (opt) => (
                     <ItemOption
                       opt={opt}
                       handleAddselectOptions={handleAddselectOptions}
                       typeRender={typeRender}
                       typeSelect={typeSelect}
                       key={opt.value}
+                      isSearchOnline={isSearchOnline}
                     />
                   ))}
                 </div>
@@ -193,7 +206,6 @@ const Options = ({
                       data={opt}
                       key={opt.value}
                       typeRender={typeRender}
-                      platArrData={platArrData}
                       typeSelect={typeSelect}
                       handleAddselectOptions={handleAddselectOptions}
                       showLevel={showLevel}

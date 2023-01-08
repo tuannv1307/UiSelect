@@ -20,8 +20,9 @@ import {
   changeElementFocused,
   DATA_UI,
   setIsLoading,
+  addSelectoptions,
 } from "../../stores/ReduxStore";
-import { arrdataRecursive, dataUiSelect, platArrData } from "../../constants";
+import { arrdataRecursive, dataUiSelect, flatArrData } from "../../constants";
 import FilterOptions from "../FilterOptions";
 import Options from "../Options";
 import { st, classes } from "./SelectOptions.st.css";
@@ -36,6 +37,7 @@ export type SelectOptionsProps = {
   url?: string;
   arrSelectedData?: string[];
 };
+
 const SelectOptions = ({
   typeRender,
   options,
@@ -46,21 +48,22 @@ const SelectOptions = ({
   url,
   arrSelectedData,
 }: SelectOptionsProps) => {
-  let data: UiSelect = useSelector(
+  const data: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
   );
-
-  const dispatch = useDispatch();
-
-  let optionsSelect: any = options;
   const [isShowOptions, setisShowOptions] = useState(false);
   const [inputSearch, setInputSearch] = useState("");
   const [isKeyDowning, setIsKeyDowning] = useState(false);
-
+  const [isFirstLoading, setIsFirstLoading] = useState(true);
   const isClearable = true;
   const isSearchable = true;
   const isDisabled = false;
   const isLoadingInput = true;
+  const optionsSelect: any = data.dataOptions;
+  const selectedData: DATA_UI[] | undefined = data.selectedData;
+  let flatArrDataSelect: DATA_UI[] | undefined = data.flatDataOptions;
+
+  const dispatch = useDispatch();
 
   const handleShowOptions = () => {
     setisShowOptions(!isShowOptions);
@@ -78,12 +81,6 @@ const SelectOptions = ({
     setisShowOptions(false);
   };
 
-  optionsSelect = data.data;
-
-  useEffect(() => {
-    dispatch(initDataUI({ data: dataUiSelect }));
-  }, [dispatch]);
-
   const getOptions = useCallback(async () => {
     try {
       if (url) {
@@ -97,40 +94,66 @@ const SelectOptions = ({
   }, [dispatch, url]);
 
   useEffect(() => {
-    if (!isSearchOnline) {
-      dispatch(initFlatData({ flatData: platArrData(optionsSelect) }));
-    } else {
+    if (isSearchOnline) {
       getOptions();
+    } else {
+      dispatch(
+        initDataUI({
+          dataOptions: arrdataRecursive(options ? options : dataUiSelect),
+        })
+      );
     }
-  }, [dispatch, optionsSelect, isSearchOnline, getOptions]);
+  }, [dispatch, getOptions, isSearchOnline, options]);
 
-  let platArrDataSe: any = data.flatData;
+  useEffect(() => {
+    dispatch(initFlatData({ flatData: flatArrData(optionsSelect) }));
+  }, [optionsSelect, dispatch]);
 
-  optionsSelect = arrdataRecursive(optionsSelect);
-  platArrDataSe = !isSearchOnline ? platArrData(optionsSelect) : platArrDataSe;
+  useEffect(() => {
+    const newArrSelected: DATA_UI[] | undefined = [];
+    if (arrSelectedData) {
+      _.forEach(flatArrDataSelect, (opt) => {
+        _.forEach(arrSelectedData, (item) => {
+          if (opt.value === item) {
+            newArrSelected.push(opt);
+          }
+        });
+      });
+    }
 
-  let selectedData: any = data.selectedData;
-
-  console.log(arrSelectedData);
+    dispatch(addSelectoptions(newArrSelected));
+  }, [arrSelectedData, dispatch, flatArrDataSelect]);
 
   const hanldeOnchangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const label = e.target.value;
     setInputSearch(label);
+    setIsFirstLoading(false);
   };
 
   if (inputSearch !== "") {
-    platArrDataSe = _.filter(platArrDataSe, (item: DATA_UI) =>
+    flatArrDataSelect = _.filter(flatArrDataSelect, (item: DATA_UI) =>
       _.includes(_.toLower(item.label), _.toLower(inputSearch))
     );
   }
 
+  if (
+    inputSearch === "" &&
+    isSearchOnline &&
+    _.size(selectedData) &&
+    isFirstLoading
+  ) {
+    flatArrDataSelect = _.cloneDeep(selectedData);
+  }
+
   useEffect(() => {
+    let time: ReturnType<typeof setTimeout>;
     if (inputSearch !== "") {
       dispatch(setIsLoading(true));
-      setTimeout(() => {
+      time = setTimeout(() => {
         dispatch(setIsLoading(false));
       }, 2000);
     }
+    return () => clearTimeout(time);
   }, [dispatch, inputSearch]);
 
   const deleteOptionAllSelected = (
@@ -138,7 +161,7 @@ const SelectOptions = ({
     type?: string,
     make?: string
   ) => {
-    let arr: DATA_UI[] = [];
+    let arr: DATA_UI[] | undefined = [];
     if (type === "CLEAR_ALL" && make === "All") {
       dispatch(deleteOptionSelected(arr));
     }
@@ -147,6 +170,7 @@ const SelectOptions = ({
       arr = _.filter(arr, (opt) => opt.value !== make);
     }
     e && e.stopPropagation();
+    setIsFirstLoading(false);
     dispatch(deleteOptionSelected(arr));
   };
 
@@ -154,7 +178,7 @@ const SelectOptions = ({
     if (data.elementFocused) {
       const currentElement = data.elementFocused;
       $(currentElement)[0]?.focus({ preventScroll: true });
-      let listWapperOptions = $("#wapper-list-option");
+      const listWapperOptions = $("#wapper-list-option");
 
       const ElStart = $(currentElement).offset()?.top || 0;
       const ElHeight = $(currentElement).outerHeight() || 40;
@@ -180,7 +204,7 @@ const SelectOptions = ({
         const listElement = $('[data-type="option"]');
         dispatch(changeElementFocused(listElement[_.size(listElement) - 1]));
       } else {
-        const currentFocused: any = data.elementFocused;
+        const currentFocused: HTMLDivElement | null = data.elementFocused;
         const listElement = $('[data-type="option"]');
         const currentIndex = _.findIndex(listElement, currentFocused);
 
@@ -199,7 +223,7 @@ const SelectOptions = ({
         const listElement = $('[data-type="option"]');
         dispatch(changeElementFocused(listElement[0]));
       } else {
-        const currentFocused: any = data.elementFocused;
+        const currentFocused: HTMLDivElement | null = data.elementFocused;
         const listElement = $('[data-type="option"]');
         const currentIndex = _.findIndex(listElement, currentFocused);
         if (currentIndex === _.size(listElement) - 1) {
@@ -273,7 +297,7 @@ const SelectOptions = ({
 
                 {typeSelect === "multi" && (
                   <div>
-                    {_.map(data.selectedData, (opt: DATA_UI) => (
+                    {_.map(selectedData, (opt: DATA_UI) => (
                       <span key={opt?.value}>
                         <div
                           className={st(classes.itemData, {
@@ -331,7 +355,7 @@ const SelectOptions = ({
         >
           <FilterOptions
             typeRender={typeRender}
-            platArrData={platArrDataSe}
+            flatArrDataSelect={flatArrDataSelect}
             inputSearch={inputSearch}
             hanldeOnchangeSearch={hanldeOnchangeSearch}
             isClearable={isClearable}
@@ -343,8 +367,8 @@ const SelectOptions = ({
 
           <Options
             typeRender={typeRender}
-            platArrData={platArrDataSe}
-            data={isSearchOnline ? [] : optionsSelect}
+            flatArrDataSelect={flatArrDataSelect}
+            data={optionsSelect}
             handleCloseOptions={handleCloseOptions}
             typeSelect={typeSelect}
             showLevel={showLevel}
@@ -354,6 +378,8 @@ const SelectOptions = ({
             typeGroup={typeGroup}
             isLoadingInput={isLoadingInput}
             isSearchOnline={isSearchOnline}
+            setIsFirstLoading={setIsFirstLoading}
+            selectedData={selectedData}
           />
         </div>
       </OutSideClick>

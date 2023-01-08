@@ -4,7 +4,7 @@ import { dataUiSelect } from "../../constants";
 // import SelectOptions from "../SelectOptions";
 import { initStore } from "../../stores/store";
 
-let data: any = dataUiSelect;
+//const data: any = dataUiSelect;
 const store = initStore();
 // it("mount", () => {
 //   cy.mount(

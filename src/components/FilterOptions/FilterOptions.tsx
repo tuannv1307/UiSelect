@@ -12,7 +12,7 @@ export type FilterOptionsProps = {
   typeRender?: "single" | "tree";
   typeSearch?: "online" | "offline";
   isSearchOnline?: boolean;
-  platArrData?: DATA_UI[];
+  flatArrDataSelect?: DATA_UI[];
   inputSearch?: string;
   hanldeOnchangeSearch?: (e: ChangeEvent<HTMLInputElement>) => void;
   isClearable?: boolean;
@@ -22,7 +22,7 @@ export type FilterOptionsProps = {
 };
 
 const FilterOptions = ({
-  platArrData,
+  flatArrDataSelect,
   inputSearch,
   hanldeOnchangeSearch,
   isSearchable,
@@ -34,7 +34,7 @@ const FilterOptions = ({
     (state: { ui_select: UiSelect }) => state.ui_select
   );
   const refInputFilter = useRef<HTMLInputElement>(null);
-  const refInput = dataStore.refInputSearch;
+  const isInnputRef = dataStore.isInputSearchRef;
   const isLoading = dataStore.isLoading;
 
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const FilterOptions = ({
     if (refInputFilter && refInputFilter.current) {
       refInputFilter.current.focus();
     }
-  }, [refInput]);
+  }, [isInnputRef]);
 
   useEffect(() => {
     if (refInputFilter && refInputFilter.current)
@@ -94,7 +94,7 @@ const FilterOptions = ({
             <>
               {!isLoading && (
                 <div className={st(classes.itemsQuality)}>
-                  {_.size(platArrData)} options
+                  {_.size(flatArrDataSelect)} options
                 </div>
               )}
             </>

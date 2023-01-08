@@ -10,20 +10,20 @@ export type DATA_UI = {
 };
 
 export type UiSelect = {
-  data?: {}[];
-  flatData?: {}[];
+  dataOptions?: {}[];
+  flatDataOptions?: {}[];
 
   selectedData?: DATA_UI[];
-  refInputSearch?: boolean;
+  isInputSearchRef?: boolean;
   elementFocused?: undefined;
   isLoading?: boolean;
 };
 
 const initState: UiSelect = {
-  data: [],
-  flatData: [],
+  dataOptions: [],
+  flatDataOptions: [],
   selectedData: [],
-  refInputSearch: false,
+  isInputSearchRef: false,
   elementFocused: undefined,
   isLoading: false,
 };
@@ -33,17 +33,17 @@ const AppStore = createSlice<UiSelect, ActionTypes>({
   initialState: initState as UiSelect,
   reducers: {
     initDataUI: (state, action) => {
-      const { data } = action.payload;
-      state.data = [...data];
+      const { dataOptions } = action.payload;
+      state.dataOptions = [...dataOptions];
     },
 
     initFlatData: (state, action) => {
       const { flatData } = action.payload;
-      state.flatData = [...flatData];
+      state.flatDataOptions = [...flatData];
     },
 
     addSelectoptions: (state, action) => {
-      let arrSelect = action.payload;
+      const arrSelect = action.payload;
       state.selectedData = arrSelect;
     },
 
@@ -52,17 +52,13 @@ const AppStore = createSlice<UiSelect, ActionTypes>({
       state.selectedData = arrDelete;
     },
 
-    setRefInputSearch: (state, action) => {
-      const refInput = action.payload;
-      state.refInputSearch = refInput;
+    setIsInputSearchRef: (state, action) => {
+      const isInputRef = action.payload;
+      state.isInputSearchRef = isInputRef;
     },
 
     changeElementFocused: (state, action) => {
       state.elementFocused = action.payload;
-    },
-
-    setShowOptions: (state, action) => {
-      state.flatData = action.payload;
     },
 
     setIsLoading: (state, action) => {
@@ -76,9 +72,8 @@ export const {
   initFlatData,
   addSelectoptions,
   deleteOptionSelected,
-  setRefInputSearch,
+  setIsInputSearchRef,
   changeElementFocused,
-  setShowOptions,
   setIsLoading,
 } = AppStore.actions;
 
