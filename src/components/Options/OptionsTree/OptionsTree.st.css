@@ -83,7 +83,6 @@
 
 .itemOptionTree > p {
     margin: 0;
-    opacity: 0.5;
 }
 
 .itemOptionTree:isDisable > p {
