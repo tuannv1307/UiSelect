@@ -1,7 +1,5 @@
 import { Provider } from "react-redux";
-
 import { arrdataRecursive, dataUiSelect, flatArrData } from "../../constants";
-// import SelectOptions from "../SelectOptions";
 import { initStore } from "../../stores/store";
 import Options from "./Options";
 

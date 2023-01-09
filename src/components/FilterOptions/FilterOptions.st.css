@@ -99,7 +99,6 @@
 .inputFilter {
     -st-states: isSearchable, isDisabled;
     width: calc(100% - 70px);
-    /* -webkit-appearance: none; */
     background-color: #fff;
     border: 1px solid #adadad;
     border-radius: 1px;
