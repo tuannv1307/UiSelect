@@ -47,7 +47,6 @@ const Options = ({
   const isLoading = dataStore.isLoading;
 
   const dispatch = useDispatch();
-  console.log(selectedData);
 
   const handleAddselectOptions = (option?: DATA_UI) => {
     const currentOption = _.cloneDeep(option);

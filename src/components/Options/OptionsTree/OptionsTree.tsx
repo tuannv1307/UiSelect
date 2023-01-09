@@ -76,6 +76,10 @@ const OptionsTree = ({
       if (e.code === "Tab") {
         dispatch(setIsInputSearchRef(!isInputSearchRef));
       }
+
+      if (e.shiftKey && e.key === "Enter") {
+        console.log("fire!");
+      }
     }
   };
 

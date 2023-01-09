@@ -28,7 +28,8 @@
 }
 
 .root:isDisable > p {
-    opacity: 0.5;
+    color: #000;
+    font-weight: 700;
 }
 
 .root:isDisable .numberGroup {

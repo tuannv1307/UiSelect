@@ -86,7 +86,8 @@
 }
 
 .itemOptionTree:isDisable > p {
-    opacity: 0.5;
+    color: #000;
+    font-weight: 600;
 }
 
 .numberGroupTree {
