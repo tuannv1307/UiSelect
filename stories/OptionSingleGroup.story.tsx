@@ -12,7 +12,6 @@ const Demo = () => (
   <App
     typeRender="single"
     typeSelect="single"
-    typeSearch="offline"
     typeGroup="group_single"
     options={data}
   />
@@ -22,7 +21,6 @@ const Demo1 = () => (
   <App
     typeRender="single"
     typeSelect="multi"
-    typeSearch="offline"
     typeGroup="group_single"
     options={data}
   />

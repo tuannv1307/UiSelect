@@ -7,7 +7,7 @@ import ItemOption from "./ItemOption";
 import { st, classes } from "./Options.st.css";
 
 export type OptionsProps = {
-  data: DATA_UI[];
+  data?: DATA_UI[];
   typeRender?: "single" | "tree";
   typeSelect?: "single" | "multi";
   typeGroup?: "group_single" | "group_tree";
@@ -17,7 +17,6 @@ export type OptionsProps = {
   handleCloseOptions?: () => void;
   deleteOptionAllSelected?: () => void;
   showLevel?: number;
-  isShowOption?: boolean;
   isKeyDowning?: boolean;
   inputSearch?: string;
   isLoadingInput?: boolean;
@@ -48,15 +47,17 @@ const Options = ({
   const isLoading = dataStore.isLoading;
 
   const dispatch = useDispatch();
+  console.log(selectedData);
 
   const handleAddselectOptions = (option?: DATA_UI) => {
     const currentOption = _.cloneDeep(option);
     if (currentOption) {
       currentOption["groupOptions"] = [];
       if (typeSelect === "single") {
-        selectedData = _.cloneDeep(selectedData);
-        selectedData = [currentOption];
-        dispatch(addSelectoptions(selectedData));
+        let currentSelectedData: DATA_UI[] | undefined =
+          _.cloneDeep(selectedData);
+        currentSelectedData = [currentOption];
+        dispatch(addSelectoptions(currentSelectedData));
       } else {
         const currentSelectedData: DATA_UI[] | undefined =
           _.cloneDeep(selectedData);
@@ -81,7 +82,7 @@ const Options = ({
   };
 
   return (
-    <div className={st(classes.root)}>
+    <div className={st(classes.root)} data-hook="options">
       {isLoading && isSearchOnline ? (
         <div className={st(classes.loading, { isLoadingInput })}>
           Loading...
@@ -94,6 +95,7 @@ const Options = ({
                 <div
                   className={st(classes.listItemOptions)}
                   id={`wapper-list-option-${typeSelect}`}
+                  data-hook="item-option-single-no_group"
                 >
                   {_.map(flatArrDataSelect, (opt) => (
                     <ItemOption
@@ -114,6 +116,7 @@ const Options = ({
                 <div
                   className={st(classes.listItemOptions)}
                   id={`wapper-list-option-${typeSelect}`}
+                  data-hook="item-option-group_single"
                 >
                   {_.map(flatArrDataSelect, (opt) => (
                     <ItemOption
@@ -141,6 +144,7 @@ const Options = ({
                   <div
                     className={st(classes.listItemOptions)}
                     id={`wapper-list-option-${typeSelect}`}
+                    data-hook="item-option-tree-no_group"
                   >
                     {_.map(flatArrDataSelect, (opt) => (
                       <ItemOption
@@ -150,6 +154,7 @@ const Options = ({
                         typeSelect={typeSelect}
                         key={opt.value}
                         isSearchOnline={isSearchOnline}
+                        typeGroup={typeGroup}
                       />
                     ))}
                   </div>
@@ -158,6 +163,7 @@ const Options = ({
                     className={st(classes.listItemOptionsTree)}
                     ref={ulWapperRef}
                     id={`wapper-list-option-${typeSelect}`}
+                    data-hook="item-option-tree-no_group"
                   >
                     {_.map(data, (opt) => (
                       <OptionsTree
@@ -169,6 +175,7 @@ const Options = ({
                         handleAddselectOptions={handleAddselectOptions}
                         showLevel={showLevel}
                         selectedData={selectedData}
+                        isSearchOnline={isSearchOnline}
                       />
                     ))}
                   </ul>
@@ -182,6 +189,7 @@ const Options = ({
                 <div
                   className={st(classes.listItemOptions)}
                   id={`wapper-list-option-${typeSelect}`}
+                  data-hook="item-option-tree-group_tree"
                 >
                   {_.map(flatArrDataSelect, (opt) => (
                     <ItemOption
@@ -191,6 +199,7 @@ const Options = ({
                       typeSelect={typeSelect}
                       key={opt.value}
                       isSearchOnline={isSearchOnline}
+                      typeGroup={typeGroup}
                     />
                   ))}
                 </div>
@@ -199,6 +208,7 @@ const Options = ({
                   className={st(classes.listItemOptionsTree)}
                   ref={ulWapperRef}
                   id={`wapper-list-option-${typeSelect}`}
+                  data-hook="item-option-tree-group_tree"
                 >
                   {_.map(data, (opt) => (
                     <OptionsTree
@@ -211,6 +221,7 @@ const Options = ({
                       showLevel={showLevel}
                       selectedData={selectedData}
                       typeGroup={typeGroup}
+                      isSearchOnline={isSearchOnline}
                     />
                   ))}
                 </ul>
@@ -221,7 +232,9 @@ const Options = ({
       )}
 
       <div className={st(classes.done)}>
-        <button onClick={handleCloseOptions}>Done</button>
+        <button onClick={handleCloseOptions} data-hook="btn-done">
+          Done
+        </button>
       </div>
     </div>
   );

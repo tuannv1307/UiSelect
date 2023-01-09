@@ -12,10 +12,9 @@ const Demo1 = () => (
   <App
     typeRender="tree"
     typeSelect="single"
-    typeSearch="offline"
     options={data}
     showLevel={2}
-    arrSelectedData={["Bags"]}
+    arrSelectedData={["Default", "Group-1", "Gear", "Group-2"]}
   />
 );
 
@@ -23,10 +22,9 @@ const Demo2 = () => (
   <App
     typeRender="tree"
     typeSelect="multi"
-    typeSearch="offline"
     options={data}
     showLevel={2}
-    arrSelectedData={["Bags", "Watches", "Collections"]}
+    arrSelectedData={["Default", "Group-1", "Gear", "Group-2"]}
   />
 );
 
@@ -37,10 +35,10 @@ export default {
   sections: [
     header({ title: "show option tree" }),
 
-    // demo({
-    //   title: "Demo 1: select single",
-    //   component: <Demo1 />,
-    // }),
+    demo({
+      title: "Demo 1: select single",
+      component: <Demo1 />,
+    }),
 
     demo({
       title: "Demo 2:select multi",

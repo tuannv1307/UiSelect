@@ -12,7 +12,6 @@ const Demo1 = () => (
   <App
     typeRender="tree"
     typeSelect="single"
-    typeSearch="offline"
     options={data}
     typeGroup="group_tree"
     showLevel={2}
@@ -23,7 +22,6 @@ const Demo2 = () => (
   <App
     typeRender="tree"
     typeSelect="multi"
-    typeSearch="offline"
     options={data}
     typeGroup="group_tree"
     showLevel={2}
@@ -42,9 +40,9 @@ export default {
       component: <Demo1 />,
     }),
 
-    // demo({
-    //   title: "Demo 2: select multi",
-    //   component: <Demo2 />,
-    // }),
+    demo({
+      title: "Demo 2: select multi",
+      component: <Demo2 />,
+    }),
   ],
 };

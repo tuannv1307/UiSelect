@@ -1,5 +1,3 @@
-.root {}
-
 .contentFilter {
     position: relative;
     margin: 13px;
@@ -10,8 +8,6 @@
     -st-states: isDisabled;
     position: relative;
 }
-
-
 
 .actionSearch > svg {
     position: absolute;

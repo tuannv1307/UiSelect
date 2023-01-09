@@ -12,7 +12,6 @@ export type DATA_UI = {
 export type UiSelect = {
   dataOptions?: {}[];
   flatDataOptions?: {}[];
-
   selectedData?: DATA_UI[];
   isInputSearchRef?: boolean;
   elementFocused?: undefined;

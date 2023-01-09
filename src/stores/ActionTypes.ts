@@ -24,10 +24,7 @@ export type ActionTypes = {
     action: PayloadAction<boolean>
   ) => void;
 
-  changeElementFocused: (
-    state: UiSelect,
-    action: PayloadAction<HTMLElement | HTMLDivElement | null | undefined>
-  ) => void;
+  changeElementFocused: (state: UiSelect, action: PayloadAction<any>) => void;
 
   setIsLoading: (state: UiSelect, action: PayloadAction<boolean>) => void;
 };

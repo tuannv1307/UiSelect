@@ -7,22 +7,20 @@ import App from "../src/App";
 const Demo1 = () => (
   <App
     typeRender="single"
-    typeSelect="multi"
-    typeSearch="online"
+    typeSelect="single"
     isSearchOnline={true}
-    url="http://localhost:3005/options"
+    url="http://192.168.1.21:3005/options"
     arrSelectedData={["Default", "Group-1", "Gear", "Group-2"]}
   />
 );
 
 const Demo2 = () => (
   <App
-    typeRender="tree"
+    typeRender="single"
     typeSelect="multi"
-    typeSearch="online"
     isSearchOnline={true}
-    url="http://localhost:3005/options"
-    arrSelectedData={["Bags", "Watches"]}
+    url="http://192.168.1.21:3005/options"
+    arrSelectedData={["Default", "Group-1", "Gear", "Group-2"]}
   />
 );
 
@@ -38,9 +36,9 @@ export default {
       component: <Demo1 />,
     }),
 
-    // demo({
-    //   title: "Demo 2: search online select multi",
-    //   component: <Demo2 />,
-    // }),
+    demo({
+      title: "Demo 2: search online select multi",
+      component: <Demo2 />,
+    }),
   ],
 };

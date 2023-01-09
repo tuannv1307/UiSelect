@@ -50,7 +50,7 @@
 }
 
 .itemOptionTree {
-    -st-states: isShowCheck, isHover, isHoverMouse;
+    -st-states: isShowCheck, isHover, isHoverMouse, isDisable;
     margin: 0;
     padding: 0.6875em 1em;
     display: flex;
@@ -75,6 +75,21 @@
     background-color: #e3e3e3;
 }
 
+.itemOptionTree:isDisable {
+    position: relative;
+    background-color: transparent;
+    cursor: default;
+}
+
+.itemOptionTree > p {
+    margin: 0;
+    opacity: 0.5;
+}
+
+.itemOptionTree:isDisable > p {
+    opacity: 0.5;
+}
+
 .numberGroupTree {
     -st-states: isShowNumber;
     display: none;
@@ -90,18 +105,19 @@
     position: absolute;
     right: 20px;
     font-weight: 600;
+    opacity: 1 !important;
 }
 
 .listItemTree {
-    -st-states: isShowGroup;
+    -st-states: isShowOption;
     position: relative;
     visibility: hidden;
     display: none;
 }
 
-.listItemTree:isShowGroup {
+.listItemTree:isShowOption {
     visibility: visible;
-      display: block;
+    display: block;
 }
 
 .toggleItems {

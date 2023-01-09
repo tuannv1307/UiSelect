@@ -51,7 +51,7 @@ const FilterOptions = ({
   }, [dispatch]);
 
   return (
-    <div className={st(classes.root)}>
+    <div className={st(classes.root)} data-hook="filter-options">
       <div className={st(classes.contentFilter)}>
         <div className={st(classes.actionSearch, { isDisabled })}>
           {isLoadingInput && (
@@ -77,6 +77,7 @@ const FilterOptions = ({
             tabIndex={0}
             ref={refInputFilter}
             disabled={isDisabled}
+            data-hook="input-search"
           />
 
           <svg

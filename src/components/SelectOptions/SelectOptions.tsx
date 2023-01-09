@@ -7,8 +7,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import $ from "jquery";
 import { useDispatch, useSelector } from "react-redux";
+import $ from "jquery";
 import _ from "lodash";
 import OutSideClick from "react-outside-click-handler";
 import axios from "axios";
@@ -110,19 +110,29 @@ const SelectOptions = ({
   }, [optionsSelect, dispatch]);
 
   useEffect(() => {
-    const newArrSelected: DATA_UI[] | undefined = [];
+    let newArrSelected: DATA_UI[] = [];
+
     if (arrSelectedData) {
-      _.forEach(flatArrDataSelect, (opt) => {
-        _.forEach(arrSelectedData, (item) => {
-          if (opt.value === item) {
+      if (typeSelect === "single") {
+        _.forEach(flatArrDataSelect, (opt) => {
+          if (opt.value === arrSelectedData[0]) {
             newArrSelected.push(opt);
           }
         });
-      });
+      } else {
+        _.forEach(flatArrDataSelect, (opt) => {
+          _.forEach(arrSelectedData, (item) => {
+            if (opt.value === item) {
+              newArrSelected.push(opt);
+            }
+          });
+        });
+      }
     }
 
-    dispatch(addSelectoptions(newArrSelected));
-  }, [arrSelectedData, dispatch, flatArrDataSelect]);
+    !_.isUndefined(newArrSelected) &&
+      dispatch(addSelectoptions(newArrSelected));
+  }, [arrSelectedData, dispatch, flatArrDataSelect, typeSelect]);
 
   const hanldeOnchangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const label = e.target.value;
@@ -205,7 +215,7 @@ const SelectOptions = ({
 
         dispatch(changeElementFocused(listElement[_.size(listElement) - 1]));
       } else {
-        const currentFocused: HTMLDivElement | null = data.elementFocused;
+        const currentFocused: HTMLElement | undefined = data.elementFocused;
         const listElement = $(`[data-type="option-${typeSelect}"]`);
         const currentIndex = _.findIndex(listElement, currentFocused);
 
@@ -224,7 +234,7 @@ const SelectOptions = ({
         const listElement = $(`[data-type="option-${typeSelect}"]`);
         dispatch(changeElementFocused(listElement[0]));
       } else {
-        const currentFocused: HTMLDivElement | null = data.elementFocused;
+        const currentFocused: HTMLElement | undefined = data.elementFocused;
         const listElement = $(`[data-type="option-${typeSelect}"]`);
         const currentIndex = _.findIndex(listElement, currentFocused);
         if (currentIndex === _.size(listElement) - 1) {
@@ -243,17 +253,17 @@ const SelectOptions = ({
 
   useEffect(() => {
     if (isShowOptions) {
-      $("#ui_select")[0]?.focus();
+      $(`#ui_select-${typeSelect}`)[0]?.focus();
     }
-  }, [isShowOptions]);
+  }, [isShowOptions, typeSelect]);
 
   return (
     <div
       className={st(classes.root)}
       onKeyUp={handleKeyDownCloseOptions}
-      id="ui_select"
-      tabIndex={-1}
-      data-hook="UiSelect"
+      id={`ui_select-${typeSelect}`}
+      tabIndex={0}
+      data-hook="Ui_Select"
     >
       <OutSideClick onOutsideClick={handleOutsideCick}>
         {typeSelect === "multi" && _.size(selectedData) > 0 && (
@@ -268,6 +278,7 @@ const SelectOptions = ({
                 deleteOptionAllSelected(e, "CLEAR_ALL", "All")
               }
               viewBox="0 0 16 16"
+              data-hook="delete-all"
             >
               <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
             </svg>
@@ -320,6 +331,7 @@ const SelectOptions = ({
                                 opt.value
                               )
                             }
+                            data-hook="delete-item"
                           >
                             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
                           </svg>
@@ -373,7 +385,6 @@ const SelectOptions = ({
             handleCloseOptions={handleCloseOptions}
             typeSelect={typeSelect}
             showLevel={showLevel}
-            isShowOption={false}
             inputSearch={inputSearch}
             isKeyDowning={isKeyDowning}
             typeGroup={typeGroup}

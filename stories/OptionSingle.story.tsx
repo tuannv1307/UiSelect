@@ -9,21 +9,11 @@ import { dataUiSelect } from "../src/constants";
 const data: any = dataUiSelect;
 
 const Demo = () => (
-  <App
-    typeRender="single"
-    typeSelect="single"
-    typeSearch="offline"
-    options={data}
-  />
+  <App typeRender="single" typeSelect="single" options={data} />
 );
 
 const Demo1 = () => (
-  <App
-    typeRender="single"
-    typeSelect="multi"
-    typeSearch="offline"
-    options={data}
-  />
+  <App typeRender="single" typeSelect="multi" options={data} />
 );
 
 export default {
