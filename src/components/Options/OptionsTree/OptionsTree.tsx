@@ -63,7 +63,7 @@ const OptionsTree = ({
   const handleKeyDownOption = (e?: KeyboardEvent<HTMLDivElement>) => {
     if (e) {
       e.preventDefault();
-      if (e.key === "Enter" || e.code === "Space") {
+      if ((e.key === "Enter" && !e.shiftKey) || e.code === "Space") {
         if (typeGroup === "group_tree") {
           !hashChild &&
             _.isFunction(handleAddselectOptions) &&
@@ -78,7 +78,7 @@ const OptionsTree = ({
       }
 
       if (e.shiftKey && e.key === "Enter") {
-        console.log("fire!");
+        setIsShowGroup(!isShowOption);
       }
     }
   };
