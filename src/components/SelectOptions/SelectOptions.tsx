@@ -254,7 +254,7 @@ const SelectOptions = ({
       $(`#ui_select-${typeSelect}`)[0]?.focus();
     }
   }, [isShowOptions, typeSelect]);
-  // console.log(data);
+
   return (
     <div
       className={st(classes.root)}
