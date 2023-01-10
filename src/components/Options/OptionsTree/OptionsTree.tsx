@@ -190,15 +190,16 @@ const OptionsTree = ({
 
           {typeSelect === "multi" &&
             typeGroup === "group_tree" &&
-            !hashChild && <>{isShowCheck ? <SquareCheck /> : <Square />}</>}
+            !hashChild &&
+            !disable && <>{isShowCheck ? <SquareCheck /> : <Square />}</>}
 
-          {typeSelect === "multi" && !typeGroup && (
+          {typeSelect === "multi" && !typeGroup && !disable && (
             <>{isShowCheck ? <SquareCheck /> : <Square />}</>
           )}
 
           <p>{data.label}</p>
 
-          {typeGroup === "group_tree" && (
+          {typeGroup === "group_tree" && !disable && (
             <span
               className={st(classes.numberGroupTree, {
                 isShowNumber: _.size(data?.groupOptions) > 0,
