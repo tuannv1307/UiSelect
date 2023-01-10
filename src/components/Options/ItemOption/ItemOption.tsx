@@ -61,12 +61,10 @@ const ItemOption = ({
 
   const element: HTMLElement | undefined =
     $(currentRef)[0].current || undefined;
-  const isHover = currentRef && element === dataStore.elementFocused;
+  const isHover = element && currentRef && element === dataStore.elementFocused;
 
   const handleOnMouseMove = () => {
-    if (currentRef && currentRef.current) {
-      dispatch(changeElementFocused(element));
-    }
+    dispatch(changeElementFocused(element));
   };
 
   const Square = () => (

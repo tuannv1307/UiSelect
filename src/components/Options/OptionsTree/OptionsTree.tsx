@@ -97,10 +97,8 @@ const OptionsTree = ({
   const isHover = currentRef && element === dataStore.elementFocused;
 
   const handleMouseMove = () => {
-    if (currentRef && currentRef.current) {
-      if (isKeyDowning !== undefined && !isKeyDowning) {
-        dispatch(changeElementFocused(element));
-      }
+    if (isKeyDowning !== undefined && !isKeyDowning) {
+      dispatch(changeElementFocused(element));
     }
   };
 

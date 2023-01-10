@@ -156,14 +156,12 @@ const SelectOptions = ({
   }
 
   useEffect(() => {
-    let time: ReturnType<typeof setTimeout>;
     if (inputSearch !== "") {
       dispatch(setIsLoading(true));
-      time = setTimeout(() => {
+      setTimeout(() => {
         dispatch(setIsLoading(false));
       }, 2000);
     }
-    return () => clearTimeout(time);
   }, [dispatch, inputSearch]);
 
   const deleteOptionAllSelected = (
@@ -256,7 +254,7 @@ const SelectOptions = ({
       $(`#ui_select-${typeSelect}`)[0]?.focus();
     }
   }, [isShowOptions, typeSelect]);
-
+  // console.log(data);
   return (
     <div
       className={st(classes.root)}
