@@ -45,7 +45,7 @@
 }
 
 .itemOption {
-    -st-states: active, isHover, isDisable;
+    -st-states: active, isHover, isGroup;
     cursor: pointer;
     display: block;
     padding: 0.6875em 1em;
@@ -63,7 +63,7 @@
     background-color: #e3e3e3;
 }
 
-.itemOption:isDisable {
+.itemOption:isGroup {
     position: relative;
     background-color: transparent;
     cursor: default;
@@ -73,11 +73,11 @@
     margin: 0;
 }
 
-.itemOption:isDisable > p {
+.itemOption:isGroup > p {
     opacity: 0.5;
 }
 
-.itemOption:isDisable .numberGroup {
+.itemOption:isGroup .numberGroup {
     border-radius: 50%;
     width: 20px;
     height: 18px;

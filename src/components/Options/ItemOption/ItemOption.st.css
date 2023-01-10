@@ -1,5 +1,5 @@
 .root {
-    -st-states: active, isHover, isDisable;
+    -st-states: active, isHover, isGroup, isDisable;
     cursor: pointer;
     display: block;
     padding: 0.6875em 1em;
@@ -17,6 +17,12 @@
     background-color: #e3e3e3;
 }
 
+.root:isGroup {
+    position: relative;
+    background-color: transparent;
+    cursor: default;
+}
+
 .root:isDisable {
     position: relative;
     background-color: transparent;
@@ -27,12 +33,16 @@
     margin: 0;
 }
 
-.root:isDisable > p {
+.root:isGroup > p {
     color: #000;
     font-weight: 700;
 }
 
-.root:isDisable .numberGroup {
+.root:isDisable > p {
+    opacity: 0.5;
+}
+
+.root:isGroup .numberGroup {
     border-radius: 50%;
     width: 20px;
     height: 18px;

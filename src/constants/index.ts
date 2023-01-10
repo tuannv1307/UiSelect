@@ -171,6 +171,13 @@ export const arrdataRecursive = (arr?: any, currentLevel = 1, path = "") => {
             3,
             currentPath.length - item?.label?.length - 3
           );
+    if (
+      item.value === "Group-7" ||
+      item.value === "Group-27" ||
+      item.value === "Group-445"
+    ) {
+      item["isGroup"] = true;
+    }
 
     if (item.groupOptions) {
       item.groupOptions = arrdataRecursive(

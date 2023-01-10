@@ -39,6 +39,8 @@ const OptionsTree = ({
   const hashChild = data.groupOptions ? true : false;
   const currentRef = useRef<HTMLDivElement>(null);
   const isInputSearchRef = dataStore.isInputSearchRef;
+  const disable = data.isGroup;
+
   const dispatch = useDispatch();
 
   const getInitShowGroup = () => {
@@ -64,12 +66,19 @@ const OptionsTree = ({
     if (e) {
       e.preventDefault();
       if ((e.key === "Enter" && !e.shiftKey) || e.code === "Space") {
-        if (typeGroup === "group_tree") {
-          !hashChild &&
-            _.isFunction(handleAddselectOptions) &&
-            handleAddselectOptions(data);
+        if (data.isGroup) {
+          return;
         } else {
-          _.isFunction(handleAddselectOptions) && handleAddselectOptions(data);
+          if (typeGroup === "group_tree") {
+            !disable &&
+              !hashChild &&
+              _.isFunction(handleAddselectOptions) &&
+              handleAddselectOptions(data);
+          } else {
+            !disable &&
+              _.isFunction(handleAddselectOptions) &&
+              handleAddselectOptions(data);
+          }
         }
       }
 
@@ -151,17 +160,20 @@ const OptionsTree = ({
             isShowCheck,
             isHover: isHover,
             isShowOption,
-            isDisable: hashChild && typeGroup === "group_tree",
+            isGroup: hashChild && typeGroup === "group_tree",
+            isDisable: disable,
           })}
           onClick={() => {
             if (typeGroup === "group_tree") {
               return (
+                !disable &&
                 !hashChild &&
                 _.isFunction(handleAddselectOptions) &&
                 handleAddselectOptions(data)
               );
             } else {
               return (
+                !disable &&
                 _.isFunction(handleAddselectOptions) &&
                 handleAddselectOptions(data)
               );

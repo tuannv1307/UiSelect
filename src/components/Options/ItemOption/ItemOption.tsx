@@ -34,18 +34,22 @@ const ItemOption = ({
   const currentRef = useRef<HTMLDivElement>(null);
   const isInputSearchRef = dataStore.isInputSearchRef;
   const hashChild = opt.groupOptions ? true : false;
-
+  const disable = opt.isGroup;
   const dispatch = useDispatch();
 
   const handleKeyDown = (e?: KeyboardEvent<HTMLDivElement>) => {
     if ((e && e.key === "Enter") || e?.code === "Space") {
       e.preventDefault();
+
       if (typeGroup === "group_single") {
-        !hashChild &&
+        !disable &&
+          !hashChild &&
           _.isFunction(handleAddselectOptions) &&
           handleAddselectOptions(opt);
       } else {
-        _.isFunction(handleAddselectOptions) && handleAddselectOptions(opt);
+        !disable &&
+          _.isFunction(handleAddselectOptions) &&
+          handleAddselectOptions(opt);
       }
     }
 
@@ -97,18 +101,22 @@ const ItemOption = ({
       className={st(classes.root, {
         active: _.find(selectedData, { value: opt.value }) ? true : false,
         isHover,
-        isDisable: _.size(opt.groupOptions) && typeGroup && hashChild,
+        isGroup: _.size(opt.groupOptions) && typeGroup && hashChild,
+        isDisable: disable,
       })}
       onClick={() => {
         if (typeGroup === "group_single") {
           return (
+            !disable &&
             _.isFunction(handleAddselectOptions) &&
             !hashChild &&
             handleAddselectOptions(opt)
           );
         } else {
           return (
-            _.isFunction(handleAddselectOptions) && handleAddselectOptions(opt)
+            !disable &&
+            _.isFunction(handleAddselectOptions) &&
+            handleAddselectOptions(opt)
           );
         }
       }}
@@ -127,7 +135,8 @@ const ItemOption = ({
       {isSearchOnline &&
         typeRender === "single" &&
         typeSelect === "multi" &&
-        !typeGroup && (
+        !typeGroup &&
+        !disable && (
           <>
             {_.find(selectedData, { value: opt.value }) ? (
               <SquareCheck />
@@ -137,7 +146,7 @@ const ItemOption = ({
           </>
         )}
 
-      {!isSearchOnline && typeSelect === "multi" && !typeGroup && (
+      {!isSearchOnline && typeSelect === "multi" && !typeGroup && !disable && (
         <>
           {_.find(selectedData, { value: opt.value }) ? (
             <SquareCheck />
@@ -146,7 +155,8 @@ const ItemOption = ({
           )}
         </>
       )}
-      {typeSelect === "multi" && !hashChild && typeGroup && (
+
+      {typeSelect === "multi" && !hashChild && typeGroup && !disable && (
         <>
           {_.find(selectedData, { value: opt.value }) ? (
             <SquareCheck />

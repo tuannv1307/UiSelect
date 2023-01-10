@@ -7,6 +7,7 @@ export type DATA_UI = {
   groupOptions?: [];
   level?: number;
   path?: string;
+  isGroup?: boolean;
 };
 
 export type UiSelect = {
