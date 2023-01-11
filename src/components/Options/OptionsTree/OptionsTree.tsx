@@ -180,7 +180,9 @@ const OptionsTree = ({
           onKeyDown={handleKeyDownOption}
           tabIndex={0}
           onMouseMove={handleMouseMove}
-          data-type={`option-${typeSelect}`}
+          data-type={
+            disable || (typeGroup && hashChild) ? "" : `option-${typeSelect}`
+          }
           ref={currentRef}
           data-hook="item-options-tree"
         >

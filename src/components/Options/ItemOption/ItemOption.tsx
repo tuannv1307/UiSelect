@@ -34,7 +34,7 @@ const ItemOption = ({
   const currentRef = useRef<HTMLDivElement>(null);
   const isInputSearchRef = dataStore.isInputSearchRef;
   const hashChild = opt.groupOptions ? true : false;
-  const disable = opt.isGroup;
+  const disable = opt.isGroup ? true : false;
   const dispatch = useDispatch();
 
   const handleKeyDown = (e?: KeyboardEvent<HTMLDivElement>) => {
@@ -124,7 +124,7 @@ const ItemOption = ({
       ref={currentRef}
       tabIndex={0}
       data-type={
-        typeGroup === "group_single" && hashChild ? "" : `option-${typeSelect}`
+        disable || (typeGroup && hashChild) ? "" : `option-${typeSelect}`
       }
       data-hook="item-options"
     >
