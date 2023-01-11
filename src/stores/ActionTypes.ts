@@ -1,10 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { DATA_UI, UiSelect } from "./ReduxStore";
+import type { UiSelect } from "./ReduxStore";
 
 export type ActionTypes = {
   initDataUI: (
     state: UiSelect,
-    action: PayloadAction<{ dataOptions: any[] }>
+    action: PayloadAction<{ dataOptions: DATA_UI[] }>
   ) => void;
 
   initFlatData: (

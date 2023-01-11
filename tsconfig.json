@@ -28,6 +28,6 @@
       "./typings/**.ts",
       "./types/**.d.ts",
       "./cypress/support/component.ts"
-    ]
+, "constants"    ]
   }
   

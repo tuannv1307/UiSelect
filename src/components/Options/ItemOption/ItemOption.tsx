@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import $ from "jquery";
 import {
-  DATA_UI,
   UiSelect,
   changeElementFocused,
   setIsInputSearchRef,
@@ -30,7 +29,7 @@ const ItemOption = ({
   const dataStore: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
   );
-  const selectedData: any = dataStore.selectedData;
+  const selectedData: DATA_UI[] | undefined = dataStore.selectedData;
   const currentRef = useRef<HTMLDivElement>(null);
   const isInputSearchRef = dataStore.isInputSearchRef;
   const hashChild = opt.groupOptions ? true : false;

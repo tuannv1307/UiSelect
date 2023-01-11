@@ -1,9 +1,9 @@
 import { Provider } from "react-redux";
-import { dataUiSelect } from "../../constants";
+import { dataUiSelect } from "../../../constants";
 import { initStore } from "../../stores/store";
 import SelectOptions from "./SelectOptions";
 
-const data: any = dataUiSelect;
+const data: DATA_UI[] = dataUiSelect;
 const store = initStore();
 
 describe("SelectOptions.cy.tsx", () => {

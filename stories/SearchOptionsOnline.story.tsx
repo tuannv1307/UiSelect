@@ -9,7 +9,7 @@ const Demo1 = () => (
     typeRender="single"
     typeSelect="single"
     isSearchOnline={true}
-    url="http://192.168.1.21:3005/options"
+    url="http://localhost:3005/options"
     arrSelectedData={["Default", "Group-1", "Gear", "Group-2"]}
   />
 );
@@ -19,7 +19,7 @@ const Demo2 = () => (
     typeRender="single"
     typeSelect="multi"
     isSearchOnline={true}
-    url="http://192.168.1.21:3005/options"
+    url="http://localhost:3005/options"
     arrSelectedData={["Default", "Group-1", "Gear", "Group-2"]}
   />
 );

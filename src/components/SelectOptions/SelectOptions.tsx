@@ -18,21 +18,21 @@ import {
   initDataUI,
   initFlatData,
   changeElementFocused,
-  DATA_UI,
   setIsLoading,
   addSelectoptions,
 } from "../../stores/ReduxStore";
-import { arrdataRecursive, dataUiSelect, flatArrData } from "../../constants";
+import { dataUiSelect } from "../../../constants";
 import FilterOptions from "../FilterOptions";
 import Options from "../Options";
 import { st, classes } from "./SelectOptions.st.css";
+import { arrdataRecursive, flatArrData } from "../../ultils";
 
 export type SelectOptionsProps = {
   typeRender?: "single" | "tree";
   typeSelect?: "single" | "multi";
   typeGroup?: "group_single" | "group_tree";
   showLevel?: number;
-  options?: {}[];
+  options?: DATA_UI[];
   isSearchOnline?: boolean;
   url?: string;
   arrSelectedData?: string[];
@@ -59,7 +59,7 @@ const SelectOptions = ({
   const isSearchable = true;
   const isDisabled = false;
   const isLoadingInput = true;
-  const optionsSelect: any = data.dataOptions;
+  const optionsSelect: DATA_UI[] | undefined = data.dataOptions;
   const selectedData: DATA_UI[] | undefined = data.selectedData;
   let flatArrDataSelect: DATA_UI[] | undefined = data.flatDataOptions;
 
@@ -106,7 +106,8 @@ const SelectOptions = ({
   }, [dispatch, getOptions, isSearchOnline, options]);
 
   useEffect(() => {
-    dispatch(initFlatData({ flatData: flatArrData(optionsSelect) }));
+    optionsSelect &&
+      dispatch(initFlatData({ flatData: flatArrData(optionsSelect) }));
   }, [optionsSelect, dispatch]);
 
   useEffect(() => {

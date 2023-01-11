@@ -1,7 +1,7 @@
 import { memo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
-import { DATA_UI, UiSelect, addSelectoptions } from "../../stores/ReduxStore";
+import { UiSelect, addSelectoptions } from "../../stores/ReduxStore";
 import OptionsTree from "./OptionsTree";
 import ItemOption from "./ItemOption";
 import { st, classes } from "./Options.st.css";

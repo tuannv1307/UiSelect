@@ -1,5 +1,4 @@
 import { Provider } from "react-redux";
-
 import { initStore } from "./stores/store";
 import SelectOptions from "./components/SelectOptions";
 
@@ -10,7 +9,7 @@ function App(props: {
   typeGroup?: "group_single" | "group_tree";
   isGroup?: boolean;
   showLevel?: number;
-  options?: {}[];
+  options?: DATA_UI[];
   isSearchOnline?: boolean;
   url?: string;
   arrSelectedData?: string[];

@@ -1,18 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { ActionTypes } from "./ActionTypes";
 
-export type DATA_UI = {
-  value?: string;
-  label?: string;
-  groupOptions?: [];
-  level?: number;
-  path?: string;
-  isGroup?: boolean;
-};
-
 export type UiSelect = {
-  dataOptions?: {}[];
-  flatDataOptions?: {}[];
+  dataOptions?: DATA_UI[];
+  flatDataOptions?: DATA_UI[];
   selectedData?: DATA_UI[];
   isInputSearchRef?: boolean;
   elementFocused?: undefined;

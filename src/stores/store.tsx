@@ -4,6 +4,7 @@ import mainReducer from "./ReduxStore";
 export const initStore = () => {
   return configureStore({
     reducer: { ui_select: mainReducer },
+
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,

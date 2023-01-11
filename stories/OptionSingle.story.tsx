@@ -3,10 +3,9 @@ import React from "react";
 import { header, demo } from "wix-storybook-utils/Sections";
 import { CATEGORY } from "./storiesHierarchy";
 import App from "../src/App";
+import { dataUiSelect } from "../constants";
 
-import { dataUiSelect } from "../src/constants";
-
-const data: any = dataUiSelect;
+const data = dataUiSelect;
 
 const Demo = () => (
   <App typeRender="single" typeSelect="single" options={data} />

@@ -1,11 +1,7 @@
 import { ChangeEvent, memo, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
-import {
-  DATA_UI,
-  UiSelect,
-  changeElementFocused,
-} from "../../stores/ReduxStore";
+import { UiSelect, changeElementFocused } from "../../stores/ReduxStore";
 import { st, classes } from "./FilterOptions.st.css";
 
 export type FilterOptionsProps = {
@@ -33,7 +29,7 @@ const FilterOptions = ({
   const dataStore: UiSelect = useSelector(
     (state: { ui_select: UiSelect }) => state.ui_select
   );
-  const refInputFilter = useRef<HTMLInputElement>(null);
+  const refInputFilter = useRef<HTMLInputElement | null>(null);
   const isInnputRef = dataStore.isInputSearchRef;
   const isLoading = dataStore.isLoading;
 
@@ -53,7 +49,10 @@ const FilterOptions = ({
   return (
     <div className={st(classes.root)} data-hook="filter-options">
       <div className={st(classes.contentFilter)}>
-        <div className={st(classes.actionSearch, { isDisabled })}>
+        <div
+          className={st(classes.actionSearch, { isDisabled, isSearchable })}
+          data-hook="action-search"
+        >
           {isLoadingInput && (
             <span
               className={st(classes.iconLoading, {
@@ -94,12 +93,18 @@ const FilterOptions = ({
           {inputSearch !== "" && (
             <>
               {!isSearchOnline && (
-                <div className={st(classes.itemsQuality)}>
+                <div
+                  className={st(classes.itemsQuality)}
+                  data-hook="quality-options"
+                >
                   {_.size(flatArrDataSelect)} options
                 </div>
               )}
               {!isLoading && isSearchOnline && (
-                <div className={st(classes.itemsQuality)}>
+                <div
+                  className={st(classes.itemsQuality)}
+                  data-hook="quality-options"
+                >
                   {_.size(flatArrDataSelect)} options
                 </div>
               )}

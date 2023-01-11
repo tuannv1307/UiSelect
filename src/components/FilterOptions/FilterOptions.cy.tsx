@@ -116,41 +116,15 @@ const store = initStore();
 
 describe("FilterOptions.cy.tsx", () => {
   it("Show mount", () => {
-    const handleChange = () => {
-      console.log("anc");
-    };
+    cy.viewport("macbook-15");
 
     cy.mount(
       <Provider store={store}>
         <FilterOptions
           flatArrDataSelect={data}
-          inputSearch={""}
-          hanldeOnchangeSearch={handleChange}
+          inputSearch=""
           isSearchable={true}
           isDisabled={false}
-          isLoadingInput={true}
-          isSearchOnline={true}
-        />
-      </Provider>
-    );
-    cy.get('[data-hook="filter-options"]').viewport("macbook-15");
-  });
-
-  it("Show mount onChange input", () => {
-    const handleChange = () => {
-      console.log("anc");
-    };
-
-    cy.mount(
-      <Provider store={store}>
-        <FilterOptions
-          flatArrDataSelect={data}
-          inputSearch={""}
-          hanldeOnchangeSearch={handleChange}
-          isSearchable={true}
-          isDisabled={false}
-          isLoadingInput={true}
-          isSearchOnline={true}
         />
       </Provider>
     );
@@ -160,5 +134,80 @@ describe("FilterOptions.cy.tsx", () => {
       .invoke("val", "lll")
       .should("have.value", "lll")
       .and("have.css", "border-color", "rgb(0, 123, 219)");
+  });
+
+  it("Show mount is disable", () => {
+    cy.viewport("macbook-15");
+
+    cy.mount(
+      <Provider store={store}>
+        <FilterOptions
+          flatArrDataSelect={data}
+          inputSearch=""
+          isSearchable={true}
+          isDisabled={true}
+        />
+      </Provider>
+    );
+
+    cy.get('[data-hook="filter-options"]').viewport("macbook-15");
+    cy.get('[data-hook="input-search"]').should("be.disabled");
+  });
+
+  it("Show mount with searchable is fasle", () => {
+    cy.viewport("macbook-15");
+
+    cy.mount(
+      <Provider store={store}>
+        <FilterOptions
+          flatArrDataSelect={data}
+          inputSearch=""
+          isSearchable={false}
+          isDisabled={false}
+        />
+      </Provider>
+    );
+
+    cy.get('[data-hook="filter-options"]').viewport("macbook-15");
+    cy.get('[data-hook="input-search"]').should("be.hidden");
+  });
+
+  it("Show mount onChange input", () => {
+    cy.viewport("macbook-15");
+    const handleChange = cy.spy().as("handleChange");
+
+    cy.mount(
+      <Provider store={store}>
+        <FilterOptions
+          flatArrDataSelect={data}
+          inputSearch={"a"}
+          hanldeOnchangeSearch={handleChange}
+          isSearchable={true}
+        />
+      </Provider>
+    );
+    cy.get('[data-hook="filter-options"]');
+    cy.get('[data-hook="action-search"]');
+    cy.get('[data-hook="input-search"]').type("ab");
+    cy.get("@handleChange").should("be.calledBefore", "ab");
+  });
+
+  it("Show mount with input show data", () => {
+    cy.viewport("macbook-15");
+    const handleChange = cy.spy().as("handleChange");
+
+    cy.mount(
+      <Provider store={store}>
+        <FilterOptions
+          flatArrDataSelect={data}
+          inputSearch={"a"}
+          hanldeOnchangeSearch={handleChange}
+          isSearchable={true}
+        />
+      </Provider>
+    );
+    cy.get('[data-hook="filter-options"]');
+    cy.get('[data-hook="action-search"]');
+    cy.get('[data-hook="quality-options"]').should("have.text", "39 options");
   });
 });

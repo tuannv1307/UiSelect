@@ -5,7 +5,7 @@
 }
 
 .actionSearch {
-    -st-states: isDisabled;
+    -st-states: isDisabled, isSearchable;
     position: relative;
 }
 
@@ -13,10 +13,15 @@
     position: absolute;
     right: 18px;
     top: 6px;
+    display: none;
 }
 
 .actionSearch:isDisabled > svg {
     color: rgb(224, 224, 224);
+}
+
+.actionSearch:isDisabled > svg {
+    display: inline-block;
 }
 
 .iconLoading {

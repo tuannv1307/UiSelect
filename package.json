@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "webpack serve --open --port 2008",
-    "storybook": "start-storybook -p 3008",
+    "storybook": "start-storybook -p 3009",
     "build": "webpack     --mode production"
   },
   "dependencies": {

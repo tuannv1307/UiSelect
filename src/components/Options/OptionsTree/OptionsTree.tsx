@@ -2,16 +2,15 @@ import { memo, KeyboardEvent, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import $ from "jquery";
-import { st, classes } from "./OptionsTree.st.css";
 import {
-  DATA_UI,
   UiSelect,
   changeElementFocused,
   setIsInputSearchRef,
 } from "../../../stores/ReduxStore";
+import { st, classes } from "./OptionsTree.st.css";
 
 export type OptionsTreeProps = {
-  data?: any;
+  data: DATA_UI;
   typeRender?: "single" | "tree";
   typeSelect?: "single" | "multi";
   isSearchOnline?: boolean;
@@ -130,7 +129,12 @@ const OptionsTree = ({
   );
 
   return (
-    <li className={st(classes.root)} data-hook="options-tree">
+    <li
+      className={st(classes.root, {
+        isBorder: data.level === 1,
+      })}
+      data-hook="options-tree"
+    >
       <div
         className={st(classes.itemTrees, {
           isBorder: hashChild && isShowOption,
